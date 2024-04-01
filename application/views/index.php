@@ -8,11 +8,11 @@
 	<link rel="stylesheet" href="<?= base_url("assets/css/bootstrap.min.css"); ?>">
 </head>
 <body>
-	<a href="<?= site_url("products"); ?>">Product Page (0% FE completed, 0% BE completed)</a> <br>
-	<a href="product_view.html">Item Page (0% FE completed, 0% BE completed)</a> <br>
-	<a href="cart.html">Cart Page (% FE completed, 0% BE completed)</a> <br>
-	<a href="cart.html">Checkout Page (0% FE completed, 0% BE completed)</a> <br>
-	<a href="<?= site_url("login"); ?>">Admin Login page (0% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("products"); ?>">Product Page (100% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("products/1"); ?>">Item Page (100% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("cart"); ?>">Cart Page (100% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("cart"); ?>">Checkout Page (100% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("login"); ?>">Admin Login page (100% FE completed, 0% BE completed)</a> <br>
 	<a href="admin_products.html">Admin Dashboard (0% FE completed, 0% BE completed)</a> <br>
 	<a href="admin_orders.html">Admin Order Detail (0% FE completed, 0% BE completed)</a> <br>
 </body>

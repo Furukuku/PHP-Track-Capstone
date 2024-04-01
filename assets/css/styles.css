@@ -1,0 +1,78 @@
+main.products,
+main.users {
+    height: 100vh;
+}
+
+form div a {
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #B5C0D0;
+}
+
+.categories {
+    height: 70vh;
+
+    li {
+    list-style: none;
+    cursor: pointer;
+    }
+}
+
+.products_container {
+    height: 70vh;
+}
+
+article.product_cards {
+    width: 17rem;
+
+    a {
+        text-decoration: none;
+        color: #000;
+
+        .img_container {
+            height: 10rem;
+        }
+    
+        .ratings {
+            font-size: 0.8rem;
+        }
+    }
+
+}
+
+article.items_in_cart div.cart_item_img {
+    height: 8rem;
+
+    img {
+        width: 9rem;
+    }
+}
+
+.remove_to_cart {
+    cursor: pointer;
+}
+
+.product_imgs div {
+    height: 15rem;
+}
+
+.product_imgs ul li {
+    width: 25%;
+    list-style: none;
+    cursor: pointer;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
