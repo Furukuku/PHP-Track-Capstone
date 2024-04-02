@@ -1,0 +1,59 @@
+nav.sidebar {
+    width: 200px;
+}
+
+main,
+.search_container {
+    margin-left: 200px;
+}
+
+header {
+    left: 200px;
+}
+
+table {
+    border-collapse: separate !important;
+    border-spacing: 0 1rem;
+
+    tbody tr td img {
+        width: 5rem;
+        height: 5rem;
+    }
+}
+
+textarea {
+    resize: none !important;
+    height: 10rem;
+}
+
+#upload_imgs {
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+    
+    div {
+        border: 2px dotted #4e4e4e;
+        height: 100%;
+        width: 100%;
+        font-size: 0.8rem;
+    }
+}
+
+#uploaded_img_container label img {
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+}
+
+.count {
+    font-size: 0.8rem;
+}
+
+.address {
+    font-size: 0.7rem;
+}
+
+.categories li,
+.remove {
+    cursor: pointer;
+}

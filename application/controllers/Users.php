@@ -7,9 +7,9 @@ class Users extends CI_Controller {
      * @return void
      */
     public function login() {
-        $this->load->view("partials/header");
+        $this->load->view("partials/customer/header");
         $this->load->view("users/login");
-        $this->load->view("partials/footer");
+        $this->load->view("partials/customer/footer");
     }
 
     /**
@@ -17,8 +17,8 @@ class Users extends CI_Controller {
      * @return void
      */
     public function signup() {
-        $this->load->view("partials/header");
+        $this->load->view("partials/customer/header");
         $this->load->view("users/sign-up");
-        $this->load->view("partials/footer");
+        $this->load->view("partials/customer/footer");
     }
 }

@@ -13,7 +13,7 @@
 	<a href="<?= site_url("cart"); ?>">Cart Page (100% FE completed, 0% BE completed)</a> <br>
 	<a href="<?= site_url("cart"); ?>">Checkout Page (100% FE completed, 0% BE completed)</a> <br>
 	<a href="<?= site_url("login"); ?>">Admin Login page (100% FE completed, 0% BE completed)</a> <br>
-	<a href="admin_products.html">Admin Dashboard (0% FE completed, 0% BE completed)</a> <br>
-	<a href="admin_orders.html">Admin Order Detail (0% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("my-products"); ?>">Admin Dashboard (90% FE completed, 0% BE completed)</a> <br>
+	<a href="<?= site_url("orders"); ?>">Admin Order Detail (100% FE completed, 0% BE completed)</a> <br>
 </body>
 </html>

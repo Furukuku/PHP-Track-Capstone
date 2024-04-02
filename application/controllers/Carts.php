@@ -7,9 +7,9 @@ class Carts extends CI_Controller {
      * @return void
      */
     public function index() {
-        $this->load->view("partials/header");
-        $this->load->view("partials/nav");
+        $this->load->view("partials/customer/header");
+        $this->load->view("partials/customer/nav");
         $this->load->view("carts/index");
-        $this->load->view("partials/footer");
+        $this->load->view("partials/customer/footer");
     }
 }
