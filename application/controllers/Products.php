@@ -7,10 +7,17 @@ class Products extends CI_Controller {
      * @return void
      */
     public function index() {
-        $this->load->view("partials/customer/header");
-        $this->load->view("partials/customer/nav");
-        $this->load->view("products/index");
-        $this->load->view("partials/customer/footer");
+        $user = $this->session->userdata("user");
+        if ($user) {
+            $this->load->view("partials/customer/header");
+            $this->load->view("partials/customer/nav", array("user" => $user));
+            $this->load->view("products/index", array(
+                "success" => $this->session->flashdata("success")
+            ));
+            $this->load->view("partials/customer/footer");
+        } else {
+            return redirect("login");
+        }
     }
 
     /**
@@ -29,10 +36,19 @@ class Products extends CI_Controller {
      * @return void
      */
     public function myProducts() {
-        $this->load->view("partials/admin/header");
-        $this->load->view("partials/admin/nav");
-        $this->load->view("products/my-products");
-        $this->load->view("partials/admin/footer");
+        $user = $this->session->userdata("user");
+        if (!$user) {
+            return redirect("login");
+        } else if ($user["is_admin"] == 1) {
+            $this->load->view("partials/admin/header");
+            $this->load->view("partials/admin/nav", array("user" => $user));
+            $this->load->view("products/my-products", array(
+                "success" => $this->session->flashdata("success")
+            ));
+            $this->load->view("partials/admin/footer");
+        } else {
+            return redirect("products");
+        }
     }
 
     /**

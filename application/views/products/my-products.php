@@ -74,3 +74,30 @@
         </div>
     </main>
     <script src="<?= base_url("assets/js/upload-images.js"); ?>"></script>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            allowEscapeKey: true,
+        });
+
+<?php
+        if ($success) {
+?>
+        Toast.fire({
+            icon: 'success',
+            titleText: '<?= $success; ?>',
+            color: '#fff',
+            background: '#2fa354',
+        });
+<?php
+        }
+?>
+    </script>

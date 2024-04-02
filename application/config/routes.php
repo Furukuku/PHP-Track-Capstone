@@ -52,6 +52,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/* ---------------- Start of GET Methods ---------------- */
 $route['login'] = 'users/login';
 $route['sign-up'] = 'users/signup';
 $route['products'] = 'products/index';
@@ -59,3 +61,10 @@ $route['products/(:any)'] = 'products/viewProduct/$1';
 $route['cart'] = 'carts/index';
 $route['my-products'] = 'products/myProducts';
 $route['orders'] = 'products/orders';
+/* ---------------- End of GET Methods ---------------- */
+
+/* ---------------- Start of POST Methods ---------------- */
+$route['user/create'] = 'users/create';
+$route['user/login'] = 'users/loginUser';
+$route['user/logout'] = 'users/logout';
+/* ---------------- End of POST Methods ---------------- */

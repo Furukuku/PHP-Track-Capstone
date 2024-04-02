@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="<?= base_url("assets/css/customer.css"); ?>">
     <link rel="stylesheet" href="<?= base_url("assets/bootstrap/bootstrap.min.css"); ?>">
 	<link rel="stylesheet" href="<?= base_url("assets/bootstrap/font/bootstrap-icons.min.css"); ?>">
-    <script src="<?= base_url("assets/bootstrap/js/bootstrap.min.js"); ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="<?= base_url("assets/bootstrap/bootstrap.min.js"); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-light">

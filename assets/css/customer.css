@@ -8,6 +8,10 @@ form div a {
     text-decoration: none;
 }
 
+.error {
+    font-size: 0.75rem;
+}
+
 .btn-primary {
     background-color: #B5C0D0;
 }
