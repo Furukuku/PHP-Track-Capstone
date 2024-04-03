@@ -3,26 +3,31 @@
             <div class="col-md-2 mt-3">
                 <p>Categories</p>
                 <ul class="p-0 overflow-y-auto pt-1 categories">
-                    <li class="mb-2 border rounded-3 p-3 bg-light-subtle shadow-sm position-relative">
-                        <i class="bi bi-list-ul"></i>
-                        <span class="ms-4">All Products</span>
-                        <span class="position-absolute top-0 end-0 bg-info text-dark fw-semibold rounded-pill px-2 count">12</span>
+                    <li class="mb-2 border rounded-3 bg-light-subtle shadow-sm position-relative">
+                        <form action="" method="get" class="p-3 form_categories">
+                            <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
+                            <input type="hidden" name="category" value="All">
+                            <i class="bi bi-list-ul"></i>
+                            <span class="ms-4">All Products</span>
+                            <span class="position-absolute top-0 end-0 bg-info text-dark fw-semibold rounded-pill px-2 count">12</span>
+                        </form>
                     </li>
-                    <li class="mb-2 border rounded-3 p-3 bg-light-subtle shadow-sm position-relative">
-                        <i class="bi bi-list-ul"></i>
-                        <span class="ms-4">All Products</span>
-                        <span class="position-absolute top-0 end-0 bg-info text-dark fw-semibold rounded-pill px-2 count">12</span>
+<?php
+                    // CONTINUE HERE!!!!
+                    foreach ($categories as $category) {
+?>
+                    <li class="mb-2 border rounded-3 bg-light-subtle shadow-sm position-relative">
+                        <form action="" method="get" class="p-3 form_categories">
+                            <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
+                            <input type="hidden" name="category" value="<?= $category["name"]; ?>">
+                            <i class="bi bi-gift-fill"></i>
+                            <span class="ms-4"><?= $category["name"]; ?></span>
+                            <span class="position-absolute top-0 end-0 bg-info text-dark fw-semibold rounded-pill px-2 count">12</span>
+                        </form>
                     </li>
-                    <li class="mb-2 border rounded-3 p-3 bg-light-subtle shadow-sm position-relative">
-                        <i class="bi bi-list-ul"></i>
-                        <span class="ms-4">All Products</span>
-                        <span class="position-absolute top-0 end-0 bg-info text-dark fw-semibold rounded-pill px-2 count">12</span>
-                    </li>
-                    <li class="mb-2 border rounded-3 p-3 bg-light-subtle shadow-sm position-relative">
-                        <i class="bi bi-list-ul"></i>
-                        <span class="ms-4">All Products</span>
-                        <span class="position-absolute top-0 end-0 bg-info text-dark fw-semibold rounded-pill px-2 count">12</span>
-                    </li>
+<?php
+                    }
+?>
                 </ul>
             </div>
             <div class="col-md-10">
@@ -39,23 +44,29 @@
                     </thead>
                     <tbody class="overflow-y-auto">
 <?php
-                        for ($i = 0; $i < 10; $i++) {
+                        if (!empty($products)) {
+                            foreach ($products as $product) {
 ?>
                         <tr class="bg-light-subtle">
                             <td class="p-3 rounded-start-3">
-                                <img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="object-fit-fill rounded" alt="product">
-                                <span class="ms-3">Carrot</span>
+                                <img src="<?= base_url("uploads/products/" . trim($product["display_img"], '"')); ?>" class="object-fit-fill rounded" alt="product">
+                                <span class="ms-3"><?= $product["name"]; ?></span>
                             </td>
-                            <td class="px-3 text-center">6</td>
-                            <td class="px-3 text-center">&#36; 25</td>
-                            <td class="px-3 text-center">Vegetables</td>
-                            <td class="px-3 text-center">100</td>
-                            <td class="px-3 text-center">23</td>
+                            <td class="px-3 text-center"><?= $product["id"]; ?></td>
+                            <td class="px-3 text-center">&#36; <?= $product["formatted_price"]; ?></td>
+                            <td class="px-3 text-center"><?= $product["category_name"]; ?></td>
+                            <td class="px-3 text-center"><?= $product["inventory"]; ?></td>
+                            <td class="px-3 text-center"><?= $product["sold"]; ?></td>
                             <td class="rounded-end-3 text-center align-middle">
                                 <button type="button" class="btn btn-outline-secondary mx-3">Edit</button>
                                 <i class="bi bi-trash-fill mx-3 remove"></i>
                             </td>
                         </tr>
+<?php
+                            }
+                        } else {
+?>
+                        <td class="text-center mt-5 fs-4" colspan="5">No available products</td>
 <?php
                         }
 ?>
@@ -73,7 +84,8 @@
             </div>
         </div>
     </main>
-    <script src="<?= base_url("assets/js/upload-images.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/categories-filter.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/add-product.js"); ?>"></script>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -82,6 +94,7 @@
             customClass: {
                 popup: 'colored-toast',
             },
+            showCloseButton: true,
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,

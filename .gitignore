@@ -36,3 +36,9 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 assets/bootstrap/css
 assets/bootstrap/js
 assets/bootstrap/icons
+
+# Ignore upload files
+uploads/
+
+# Ignore vscode debugger
+.vscode/

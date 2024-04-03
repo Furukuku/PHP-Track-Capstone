@@ -3,25 +3,31 @@
         <div class="row my-4 bg-white rounded border shadow-sm px-3 py-5">
             <div class="col-md-4 px-5 product_imgs">
                 <div class="row mb-3 border rounded">
-                    <img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="h-100 object-fit-contain rounded" alt="product">
+                    <img id="default_img" src="<?= base_url("uploads/products/{$images->default}"); ?>" class="h-100 object-fit-contain rounded" alt="product">
                 </div>
-                <ul class="row justify-content-between p-0 mb-0">
-                    <li class="d-inline-block"><img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="w-100 rounded border border-2 border-info" alt="product"></li>
-                    <li class="d-inline-block"><img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="w-100 rounded" alt="product"></li>
-                    <li class="d-inline-block"><img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="w-100 rounded" alt="product"></li>
-                    <li class="d-inline-block"><img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="w-100 rounded" alt="product"></li>
+                <ul class="row justify-content-start p-0 mb-0">
+                    <li class="d-inline-block"><img src="<?= base_url("uploads/products/{$images->default}"); ?>" class="w-100 rounded border border-2 border-info object-fit-contain sub_image" alt="product"></li>
+<?php
+                    if (isset($images->subs)) {
+                        foreach ($images->subs as $image) {
+?>
+                    <li class="d-inline-block"><img src="<?= base_url("uploads/products/{$image}"); ?>" class="w-100 rounded object-fit-contain sub_image" alt="product"></li>
+<?php
+                        }
+                    }
+?>
                 </ul>
             </div>
             <div class="col-md-8 px-5">
-                <p class="fs-2 mb-1">Carrots</p>
+                <p class="fs-2 mb-1"><?= $product["name"]; ?></p>
                 <p class="mb-1 ratings">
                     <i class="bi bi-star-fill text-warning"></i>
                     <i class="bi bi-star-fill text-warning"></i>
                     <i class="bi bi-star-fill text-warning"></i>
                     <span>36 Rating(s)</span>
                 </p>
-                <p class="fs-4">&#36; 25</p>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci voluptatum numquam quo eius eum minus illum culpa amet, assumenda perspiciatis perferendis distinctio libero modi aliquam blanditiis sunt ex dicta expedita omnis doloremque unde? Ad, tempore dicta impedit odit quis dolor? Nam libero maxime quisquam velit quaerat repellat molestias minus optio ab perferendis voluptatem reiciendis eaque sint modi amet tempore sed ex, natus fugiat maiores illo accusantium beatae. Alias sed explicabo, ipsum cum aspernatur sunt dolorum adipisci vero saepe deserunt recusandae dolore doloremque illo dolores deleniti architecto voluptates vel nam! Vitae sint quas tenetur alias ipsam sapiente cupiditate repellendus reprehenderit voluptatem?</p>
+                <p class="fs-4">&#36; <?= $product["price"]; ?></p>
+                <p><?= $product["description"]; ?></p>
                 <div class="row align-items-end">
                     <div class="col-md-3">
                         <label for="quantity" class="form-label">Quantity</label>
@@ -74,3 +80,4 @@
             </div>
         </div>
     </main>
+    <script src="<?= base_url("assets/js/product-images.js"); ?>"></script>

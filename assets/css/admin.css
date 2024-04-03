@@ -26,20 +26,7 @@ textarea {
     height: 10rem;
 }
 
-#upload_imgs {
-    height: 200px;
-    width: 200px;
-    cursor: pointer;
-    
-    div {
-        border: 2px dotted #4e4e4e;
-        height: 100%;
-        width: 100%;
-        font-size: 0.8rem;
-    }
-}
-
-#uploaded_img_container label img {
+#uploaded_img_container img {
     width: 120px;
     height: 120px;
     cursor: pointer;
@@ -56,4 +43,8 @@ textarea {
 .categories li,
 .remove {
     cursor: pointer;
+}
+
+.error {
+    font-size: 0.75rem;
 }

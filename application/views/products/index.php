@@ -3,38 +3,43 @@
             <div class="col-md-2">
                 <p>Categories</p>
                 <ul class="p-0 overflow-y-auto border-top pt-1 categories">
-                    <li class="mb-2 border rounded-3 p-3 bg-white shadow-sm">
-                        <i class="bi bi-gift-fill"></i>
-                        <span class="ms-4">All Products</span>
+                    <li class="mb-2 border rounded-3 bg-white shadow-sm">
+                        <a href="<?= site_url("products"); ?>" class="d-block text-dark link-underline link-underline-opacity-0 p-3">
+                            <i class="bi bi-list-ul"></i>
+                            <span class="ms-4">All Products</span>
+                        </a>
                     </li>
-                    <li class="mb-2 border rounded-3 p-3 bg-white shadow-sm">
-                        <i class="bi bi-gift-fill"></i>
-                        <span class="ms-4">All Products</span>
+<?php
+                    foreach ($categories as $category) {
+?>
+                    <li class="mb-2 border rounded-3 bg-white shadow-sm">
+                        <form action="<?= site_url("products/filter"); ?>" method="get" class="p-3 form_categories">
+                            <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
+                            <input type="hidden" name="category" value="<?= $category["id"]; ?>">
+                            <i class="bi bi-gift-fill"></i>
+                            <span class="ms-4"><?= $category["name"]; ?></span>
+                        </form>
                     </li>
-                    <li class="mb-2 border rounded-3 p-3 bg-white shadow-sm">
-                        <i class="bi bi-gift-fill"></i>
-                        <span class="ms-4">All Products</span>
-                    </li>
-                    <li class="mb-2 border rounded-3 p-3 bg-white shadow-sm">
-                        <i class="bi bi-gift-fill"></i>
-                        <span class="ms-4">All Products</span>
-                    </li>
+<?php
+                    }
+?>
                 </ul>
             </div>
             <div class="col-md-10">
-                <p>All Products (105)</p>
+                <p><?= $category_label; ?></p>
                 <div class="overflow-y-auto border-top mb-4 products_container">
 <?php
-                    for ($i = 0; $i < 20; $i++) {
+                    if (!empty($products)) {
+                        foreach ($products as $product) {
 ?>
                     <article class="border rounded bg-white shadow-sm d-inline-block mx-1 my-1 product_cards">
-                        <a href="<?= site_url("products/1"); ?>">
+                        <a href="<?= site_url("products/view/{$product["id"]}"); ?>">
                             <div class="border-bottom img_container">
-                                <img src="https://i.ebayimg.com/images/g/Y8AAAOSwD3NjmB5K/s-l1200.webp" class="h-100 w-100 object-fit-cover rounded-top" alt="product">
+                                <img src="<?= base_url("uploads/products/" . trim($product["display_img"], '"')); ?>" class="h-100 w-100 object-fit-cover rounded-top" alt="product">
                             </div>
                             <div class="row px-3 py-2 align-items-center">
                                 <div class="col-9">
-                                    <p class="text-truncate">Carrots</p>
+                                    <p class="text-truncate"><?= $product["name"]; ?></p>
                                     <p class="mb-0 ratings">
                                         <i class="bi bi-star-fill text-warning"></i>
                                         <i class="bi bi-star-fill text-warning"></i>
@@ -48,6 +53,11 @@
                             </div>
                         </a>
                     </article>
+<?php
+                        }
+                    } else {
+?>
+                    <h3 class="text-center mt-5">No available products</h3>
 <?php
                     }
 ?>
@@ -64,6 +74,7 @@
             </div>
         </div>
     </main>
+    <script src="<?= base_url("assets/js/categories-filter.js"); ?>"></script>
     <script>
         const Toast = Swal.mixin({
             toast: true,

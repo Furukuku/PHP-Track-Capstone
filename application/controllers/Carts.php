@@ -7,9 +7,15 @@ class Carts extends CI_Controller {
      * @return void
      */
     public function index() {
-        $this->load->view("partials/customer/header");
-        $this->load->view("partials/customer/nav");
-        $this->load->view("carts/index");
-        $this->load->view("partials/customer/footer");
+        $user = $this->session->userdata("user");
+        
+        if ($user) {
+            $this->load->view("partials/customer/header");
+            $this->load->view("partials/customer/nav", array("user" => $user));
+            $this->load->view("carts/index");
+            $this->load->view("partials/customer/footer");
+        } else {
+            return redirect("login");
+        }
     }
 }

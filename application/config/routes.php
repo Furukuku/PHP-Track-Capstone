@@ -57,14 +57,17 @@ $route['translate_uri_dashes'] = FALSE;
 $route['login'] = 'users/login';
 $route['sign-up'] = 'users/signup';
 $route['products'] = 'products/index';
-$route['products/(:any)'] = 'products/viewProduct/$1';
+$route['products/filter'] = 'products/filter';
+$route['products/view/(:any)'] = 'products/viewProduct/$1';
 $route['cart'] = 'carts/index';
 $route['my-products'] = 'products/myProducts';
-$route['orders'] = 'products/orders';
+$route['forms/add-product'] = 'products/addProductHtml';
+$route['orders'] = 'orders/index';
 /* ---------------- End of GET Methods ---------------- */
 
 /* ---------------- Start of POST Methods ---------------- */
 $route['user/create'] = 'users/create';
 $route['user/login'] = 'users/loginUser';
 $route['user/logout'] = 'users/logout';
+$route['product/create'] = 'products/create';
 /* ---------------- End of POST Methods ---------------- */
