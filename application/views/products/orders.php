@@ -86,4 +86,3 @@
             </div>
         </div>
     </main>
-    <script src="<?= base_url("assets/js/upload-images.js"); ?>"></script>

@@ -23,28 +23,33 @@
     </nav>
     <div class="px-4 pt-5 mt-5 search_container">
         <div class="row">
-            <form action="" method="get" class="col-md-4 mb-3">
-                <input type="search" class="form-control" placeholder="Search products">
+            <form action="#" method="get" id="admin_form_search" class="col-md-4 mb-3">
+                <input type="search" name="keyword" id="admin_search" class="form-control" placeholder="Search products">
             </form>
+<?php
+            if (current_url() === "/my-products" || current_url() === "/my-products/admin-filter") {
+?>
             <div class="col-md-2 mb-3">
-                <button type="button" class="btn btn-bluegreen" data-bs-toggle="modal" data-bs-target="#add_product_modal"><i class="bi bi-plus-circle me-2"></i>Add product</button>
+                <button type="button" id="show_add_modal_btn" class="btn btn-bluegreen" data-bs-toggle="modal" data-bs-target="#add_product_modal"><i class="bi bi-plus-circle me-2"></i>Add product</button>
             </div>
+<?php
+            }
+?>
         </div>
     </div>
-
+    <!-- Add Modal -->
     <div class="modal fade" id="add_product_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="add_product_modal_label" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="add_product_modal_label">Modal title</h1>
+                    <h1 class="modal-title fs-5" id="add_product_modal_label">Add Product</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             <div id="add_product" class="modal-body"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary px-5 me-2" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" id="save_product_btn" class="btn btn-bluegreen px-5">Save</button>
+                <button type="submit" id="add_product_btn" class="btn btn-bluegreen px-5">Add</button>
             </div>
             </div>
         </div>
     </div>
-    

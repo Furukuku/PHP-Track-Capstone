@@ -26,7 +26,8 @@ textarea {
     height: 10rem;
 }
 
-#uploaded_img_container img {
+#uploaded_img_container img,
+#edit_uploaded_img_container img {
     width: 120px;
     height: 120px;
     cursor: pointer;

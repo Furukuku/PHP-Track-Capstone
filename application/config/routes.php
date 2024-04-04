@@ -58,11 +58,18 @@ $route['login'] = 'users/login';
 $route['sign-up'] = 'users/signup';
 $route['products'] = 'products/index';
 $route['products/filter'] = 'products/filter';
+$route['my-products/admin-filter'] = 'products/adminFilter';
 $route['products/view/(:any)'] = 'products/viewProduct/$1';
 $route['cart'] = 'carts/index';
 $route['my-products'] = 'products/myProducts';
 $route['forms/add-product'] = 'products/addProductHtml';
+$route['forms/edit-product/(:any)'] = 'products/editProductHtml/$1';
 $route['orders'] = 'orders/index';
+$route['product/delete/(:any)'] = 'products/delete/$1';
+$route['my-products/list'] = 'products/adminProductListHtml';
+$route['my-products/categories'] = 'products/adminCategoryListHtml';
+$route['products/admin-search/(:any)/(:any)'] = 'products/adminSearch/$1/$2';
+$route['my-products/paginate/(:any)'] = 'products/paginationHtml/$1';
 /* ---------------- End of GET Methods ---------------- */
 
 /* ---------------- Start of POST Methods ---------------- */
@@ -70,4 +77,5 @@ $route['user/create'] = 'users/create';
 $route['user/login'] = 'users/loginUser';
 $route['user/logout'] = 'users/logout';
 $route['product/create'] = 'products/create';
+$route['product/update'] = 'products/update';
 /* ---------------- End of POST Methods ---------------- */

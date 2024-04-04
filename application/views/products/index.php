@@ -2,22 +2,24 @@
         <div class="row gx-4 pb-5">
             <div class="col-md-2">
                 <p>Categories</p>
-                <ul class="p-0 overflow-y-auto border-top pt-1 categories">
+                <ul class="p-0 overflow-y-auto border-top pt-1 position-relative categories">
                     <li class="mb-2 border rounded-3 bg-white shadow-sm">
                         <a href="<?= site_url("products"); ?>" class="d-block text-dark link-underline link-underline-opacity-0 p-3">
                             <i class="bi bi-list-ul"></i>
                             <span class="ms-4">All Products</span>
+                            <span class="position-absolute top-0 end-0 bg-info text-light fw-semibold rounded-pill px-2 count"><?= $product_count; ?></span>
                         </a>
                     </li>
 <?php
                     foreach ($categories as $category) {
 ?>
-                    <li class="mb-2 border rounded-3 bg-white shadow-sm">
+                    <li class="mb-2 border rounded-3 bg-white shadow-sm position-relative">
                         <form action="<?= site_url("products/filter"); ?>" method="get" class="p-3 form_categories">
                             <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
                             <input type="hidden" name="category" value="<?= $category["id"]; ?>">
                             <i class="bi bi-gift-fill"></i>
                             <span class="ms-4"><?= $category["name"]; ?></span>
+                            <span class="position-absolute top-0 end-0 bg-info text-light fw-semibold rounded-pill px-2 count"><?= $category["product_count"]; ?></span>
                         </form>
                     </li>
 <?php

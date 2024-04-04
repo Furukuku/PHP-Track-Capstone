@@ -5,7 +5,12 @@ class Category extends CI_Model {
      * @return array Array of fetched categories
      */
     public function getAllCategories() {
-        return $this->db->query("SELECT * FROM categories;")->result_array();
+        return $this->db->query(
+            "SELECT categories.*, COUNT(products.id) AS product_count
+            FROM categories
+            LEFT JOIN products ON categories.id = products.category_id
+            GROUP BY categories.id;"
+        )->result_array();
     }
 
     /**

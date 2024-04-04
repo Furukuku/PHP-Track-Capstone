@@ -6,12 +6,11 @@
                     <img id="default_img" src="<?= base_url("uploads/products/{$images->default}"); ?>" class="h-100 object-fit-contain rounded" alt="product">
                 </div>
                 <ul class="row justify-content-start p-0 mb-0">
-                    <li class="d-inline-block"><img src="<?= base_url("uploads/products/{$images->default}"); ?>" class="w-100 rounded border border-2 border-info object-fit-contain sub_image" alt="product"></li>
 <?php
                     if (isset($images->subs)) {
                         foreach ($images->subs as $image) {
 ?>
-                    <li class="d-inline-block"><img src="<?= base_url("uploads/products/{$image}"); ?>" class="w-100 rounded object-fit-contain sub_image" alt="product"></li>
+                    <li class="d-inline-block"><img src="<?= base_url("uploads/products/{$image}"); ?>" class="w-100 rounded object-fit-contain <?= $image === $images->default ? "border border-2 border-info" : ""; ?> sub_image" alt="product"></li>
 <?php
                         }
                     }

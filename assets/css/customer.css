@@ -22,6 +22,10 @@ form div a {
     li {
     list-style: none;
     cursor: pointer;
+
+        .count {
+            font-size: 0.8rem;
+        }
     }
 }
 

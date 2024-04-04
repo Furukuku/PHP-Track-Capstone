@@ -1,12 +1,13 @@
 <?php
 class Product extends CI_Model {
     /**
-     * Loads the necessary models and libraries
+     * Loads the necessary models, helpers, and libraries
      * @return void
      */
     public function __construct() {
         parent::__construct();
         $this->load->library("form_validation");
+        $this->load->helper('file');
     }
 
     /**
@@ -19,7 +20,9 @@ class Product extends CI_Model {
             FROM products
             LEFT JOIN categories ON products.category_id = categories.id
             LEFT JOIN orders ON products.id = orders.product_id
-            GROUP BY products.id;"
+            GROUP BY products.id 
+            ORDER BY products.created_at DESC 
+            LIMIT 0, 5;"
             )->result_array();
     }
 
@@ -35,7 +38,8 @@ class Product extends CI_Model {
             LEFT JOIN categories ON products.category_id = categories.id
             LEFT JOIN orders ON products.id = orders.product_id
             WHERE products.category_id = ? 
-            GROUP BY products.id;",
+            GROUP BY products.id
+            ORDER BY products.created_at DESC;",
             array($id)
         )->result_array();
     }
@@ -43,10 +47,86 @@ class Product extends CI_Model {
     /**
      * Gets a product based on id
      * @param int Id of the product
-     * @return array Array of the product details
+     * @return array Array of the products and it count
      */
     public function getProductById($id) {
         return $this->db->query("SELECT * FROM products WHERE id = ? LIMIT 1;", array($id))->row_array();
+    }
+
+    /**
+     * Searches products based on the keyword
+     * @param string Keyword to search
+     * @param int Id of the current category
+     * @return array Array of searched products 
+     */
+    public function searchProducts($keyword, $id = "All", $offset = 0) {
+        $products = array();
+
+        if ($id === "All") {
+            $products = $this->db->query(
+                "SELECT products.*, FORMAT(products.price, 0) AS formatted_price, JSON_EXTRACT(products.img_links, '$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                LEFT JOIN orders ON products.id = orders.product_id
+                WHERE products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ? 
+                GROUP BY products.id
+                ORDER BY products.created_at DESC 
+                LIMIT ?, 5;",
+                array("%{$keyword}%", "%{$keyword}%", "%{$keyword}%", $offset)
+            )->result_array();
+        } else {
+            $products = $this->db->query(
+                "SELECT products.*, FORMAT(products.price, 0) AS formatted_price, JSON_EXTRACT(products.img_links, '$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                LEFT JOIN orders ON products.id = orders.product_id
+                WHERE products.category_id = ?  
+                GROUP BY products.id 
+                HAVING products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ? 
+                ORDER BY products.created_at DESC 
+                LIMIT ?, 5;",
+                array($id, "%{$keyword}%", "%{$keyword}%", "%{$keyword}%", $offset)
+            )->result_array();
+        }
+
+        var_dump($this->countProducts($id, $keyword));
+        die();
+        return array(
+            "products" => $products,
+            "count" => $this->countProducts($id, $keyword)
+        );
+    }
+
+    /**
+     * Counts all the product
+     * @param int Id of a category
+     * @return int Number of product count
+     */
+    // CONTINUE HERE!!!!
+    public function countProducts($category_id = "All", $keyword) {
+        if ($category_id === "All") {
+            $product = $this->db->query(
+                "SELECT DISTINCT(COUNT(products.id)) AS count
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                LEFT JOIN orders ON products.id = orders.product_id
+                WHERE products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ?
+                GROUP BY products.id;", 
+                array("%{$keyword}%", "%{$keyword}%", "%{$keyword}%")
+            )->row_array();
+            return $product;
+        }
+
+        $product = $this->db->query(
+            "SELECT DISTINCT(COUNT(products.id)) AS count
+            FROM products
+            LEFT JOIN categories ON products.category_id = categories.id
+            LEFT JOIN orders ON products.id = orders.product_id
+            WHERE products.category_id = ? AND (products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ?)
+            GROUP BY products.id;", 
+            array($category_id, "%{$keyword}%", "%{$keyword}%", "%{$keyword}%")
+        )->row_array();
+        return $product;
     }
 
     /**
@@ -63,6 +143,60 @@ class Product extends CI_Model {
         
         $values = array($user["id"], $data["details"]["category"], $images, $data["details"]["name"], $data["details"]["description"], $data["details"]["price"], $data["details"]["inventory"]);
         return $this->db->query($query, $values);
+    }
+
+    /**
+     * Updates a product
+     * @param array Array of inputted product details
+     * @return bool True if the creation was success
+     */
+    public function updateProduct($data) {
+        $user = $this->session->userdata("user");
+        $product = $this->getProductById($data["details"]["id"]);
+        $values = array();
+        $query = "UPDATE products SET name = ?, description = ?, category_id = ?, price = ?, inventory = ?, updated_at = NOW(), img_links = ?";
+        
+        foreach ($data["details"] as $key => $detail) {
+            if ($key !== "default_img" && $key !== "id" && $key !== "csrf_test_name") {
+                $values[] = $detail;
+            }
+        }
+
+        if (isset($data["images"])) {
+            $values[] = json_encode($data["images"]);
+            $images = json_decode($product["img_links"]);
+
+            foreach ($images->subs as $image) {
+                unlink("./uploads/products/{$image}");
+            }
+        } else {
+            $images = json_decode($product["img_links"]);
+            $images->default = $data["details"]["default_img"];
+            $values[] = json_encode($images);
+        }
+
+        $query .= " WHERE id = ?;";
+        $values[] = $data["details"]["id"];
+        return $this->db->query($query, $values);
+    }
+
+    /**
+     * Deletes a product based on the id
+     * @param int Id of a product
+     * @return bool True if successfully deleted
+     */
+    public function deleteProduct($id) {
+        $product = $this->getProductById($id);
+
+        if ($product) {
+            $images = json_decode($product["img_links"]);
+
+            foreach ($images->subs as $image) {
+                unlink("./uploads/products/{$image}");
+            }
+        }
+
+        return $this->db->query("DELETE FROM products WHERE id = ?", array($id));
     }
 
     /**
@@ -88,6 +222,33 @@ class Product extends CI_Model {
             "details" => $this->xssFilter($data), 
             "images" => $product_imgs
         );
+    }
+
+    /**
+     * Validates the inputted product details and the images
+     * @param array Array of the product details to validate
+     * @param array Array of the product images to validate
+     * @return array Array of validated product details and images
+     */
+    public function validateProductToUpdate($data, $images) {
+        if (!$this->validateProductDetails()) {
+            return false;
+        }
+        
+        if (!empty($images["name"][0])) {
+            $product_imgs = $this->validateProductImages($images, $data["default_img"]);
+
+            if (!$product_imgs) {
+                return false;
+            }
+
+            return array(
+                "details" => $this->xssFilter($data), 
+                "images" => $product_imgs
+            );
+        }
+
+        return array("details" => $this->xssFilter($data));
     }
 
     /**
@@ -173,9 +334,9 @@ class Product extends CI_Model {
 
                 if ($default_img === $images["name"][$i]) {
                     $images_names["default"] = $image_data;
-                } else {
-                    $images_names["subs"][] = $image_data;
                 }
+                
+                $images_names["subs"][] = $image_data;
             }
 
             return $images_names;
