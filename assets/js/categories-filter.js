@@ -7,15 +7,17 @@ $(document).ready(function() {
         $("table").html(res);
     });
 
-    $(document).on("click", ".form_categories", function() {
+    $(document).on("click", ".form_categories", function(e) {
         $(this).submit();
     });
 
     $(document).on("submit", ".form_categories", function() {
-        // $.get($(this).attr("action"), $(this).serialize(), function(res) {
-        //     $("table").html(res);
-        // });
-        $.get(`/products/admin-search/${$(this).children("input[name='category']").val()}`, $("#admin_form_search").serialize(), function(res) {
+        const formData = $(this).serialize() + '&' + $("#admin_form_search").serialize();
+        $.get("my-products/paginate/1", formData, function(res) {
+            $("#pagination_container").html(res);
+        });
+
+        $.get(`/products/admin-search/${$(this).children("input[name='category']").val()}/1`, $("#admin_form_search").serialize(), function(res) {
             $("table").html(res);
         });
 

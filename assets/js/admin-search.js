@@ -9,8 +9,11 @@ $(document).ready(function() {
             $("table").html(res);
         });
 
-        $.get("my-products/paginate/1", $(this).serialize(), function(res) {
+        const formData = $(this).serialize() + '&' + $("li.border-light").children("form").serialize();
+        $.get("my-products/paginate/1", formData, function(res) {
             $("#pagination_container").html(res);
         });
+
+        return false;
     });
 });

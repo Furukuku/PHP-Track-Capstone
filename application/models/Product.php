@@ -59,7 +59,7 @@ class Product extends CI_Model {
      * @param int Id of the current category
      * @return array Array of searched products 
      */
-    public function searchProducts($keyword, $id = "All", $offset = 0) {
+    public function searchProducts($keyword = "", $id = "All", $offset = 0) {
         $products = array();
 
         if ($id === "All") {
@@ -89,8 +89,8 @@ class Product extends CI_Model {
             )->result_array();
         }
 
-        var_dump($this->countProducts($id, $keyword));
-        die();
+        // var_dump($this->countProducts($id, $keyword));
+        // die();
         return array(
             "products" => $products,
             "count" => $this->countProducts($id, $keyword)
@@ -105,28 +105,24 @@ class Product extends CI_Model {
     // CONTINUE HERE!!!!
     public function countProducts($category_id = "All", $keyword) {
         if ($category_id === "All") {
-            $product = $this->db->query(
-                "SELECT DISTINCT(COUNT(products.id)) AS count
+            return $this->db->query(
+                "SELECT COUNT(products.id) AS count
                 FROM products
                 LEFT JOIN categories ON products.category_id = categories.id
                 LEFT JOIN orders ON products.id = orders.product_id
-                WHERE products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ?
-                GROUP BY products.id;", 
+                WHERE products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ?;", 
                 array("%{$keyword}%", "%{$keyword}%", "%{$keyword}%")
             )->row_array();
-            return $product;
+        } else {
+            return $this->db->query(
+                "SELECT COUNT(products.id) AS count
+                FROM products
+                LEFT JOIN categories ON products.category_id = categories.id
+                LEFT JOIN orders ON products.id = orders.product_id
+                WHERE products.category_id = ? AND (products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ?);", 
+                array($category_id, "%{$keyword}%", "%{$keyword}%", "%{$keyword}%")
+            )->row_array();
         }
-
-        $product = $this->db->query(
-            "SELECT DISTINCT(COUNT(products.id)) AS count
-            FROM products
-            LEFT JOIN categories ON products.category_id = categories.id
-            LEFT JOIN orders ON products.id = orders.product_id
-            WHERE products.category_id = ? AND (products.name LIKE ? OR products.description LIKE ? OR categories.name LIKE ?)
-            GROUP BY products.id;", 
-            array($category_id, "%{$keyword}%", "%{$keyword}%", "%{$keyword}%")
-        )->row_array();
-        return $product;
     }
 
     /**

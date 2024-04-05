@@ -2,12 +2,11 @@
 if ($total_pages > 1) {
 ?>
 <ul class="pagination justify-content-end">
-    <li class="page-item"><a class="page-link text-light" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 <?php
     for ($link = 1; $link <= $total_pages; $link++) {
         if ($current_page == $link) {
 ?>
-    <li class="page-item"><p class="page-link text-body-secondary bg-light-subtle"><?= $link; ?></p></li>
+    <li class="page-item"><p class="page-link text-body-secondary bg-light-subtle active"><?= $link; ?></p></li>
 <?php
         } else {
 ?>
@@ -16,7 +15,6 @@ if ($total_pages > 1) {
         }
     }
 ?>
-    <li class="page-item"><a class="page-link text-light" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
 </ul>
 <?php
 }

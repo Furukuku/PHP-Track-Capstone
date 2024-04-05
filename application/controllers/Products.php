@@ -196,11 +196,20 @@ class Products extends CI_Controller {
      * @return void
      */
     public function paginationHtml($current_page) {
-        $count = $this->Product->searchProducts($this->input->get("keyword"))["count"];
-        // var_dump($count);
-        // die();
+        $products = array();
+
+        if ($this->input->get("keyword") && $this->input->get("category")) {
+            $products = $this->Product->searchProducts($this->input->get("keyword"), $this->input->get("category"))["count"];
+        } else if ($this->input->get("keyword")) {
+            $products = $this->Product->searchProducts($this->input->get("keyword"))["count"];
+        } else if ($this->input->get("category")) {
+            $products = $this->Product->searchProducts("", $this->input->get("category"))["count"];
+        } else {
+            $products = $this->Product->searchProducts()["count"];
+        }
+
         $this->load->view("partials/admin/pagination", array(
-            "total_pages" => ceil($count / 5),
+            "total_pages" => ceil($products["count"] / 5),
             "current_page" => $current_page
         ));
     }
