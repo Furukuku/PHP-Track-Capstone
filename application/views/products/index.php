@@ -14,17 +14,4 @@
     <script src="<?= base_url("assets/js/customer/search.js"); ?>"></script>
     <script src="<?= base_url("assets/js/customer/pagination.js"); ?>"></script>
     <script src="<?= base_url("assets/js/toast.js"); ?>"></script>
-    <script>
-<?php
-        if ($success) {
-?>
-        Toast.fire({
-            icon: 'success',
-            titleText: '<?= $success; ?>',
-            color: '#fff',
-            background: '#2fa354',
-        });
-<?php
-        }
-?>
-    </script>
+    <?= $toast; ?> <!-- Continue HERE!!!! -->

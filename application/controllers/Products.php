@@ -10,6 +10,7 @@ class Products extends CI_Controller {
         parent::__construct();
         $this->load->model("Category");
         $this->load->model("Product");
+        $this->load->model("Cart");
     }
 
 /* ------------------------------------------ Start of Customer Methods ------------------------------------------ */
@@ -28,13 +29,17 @@ class Products extends CI_Controller {
             $product_count = count($this->Product->getAllProducts());
             $category_label = "All Products ({$product_count})";
             $this->load->view("partials/customer/header");
-            $this->load->view("partials/customer/nav", array("user" => $user));
+            $this->load->view("partials/customer/nav", array(
+                "user" => $user,
+                "cart_count" => $this->Cart->countItemInCart()
+            ));
             $this->load->view("products/index", array(
-                "categories" => $this->Category->getAllCategories(),
-                "products" => $this->Product->getAllProducts(),
+                // "categories" => $this->Category->getAllCategories(),
+                // "products" => $this->Product->getAllProducts(),
                 "csrf" => $csrf,
-                "product_count" => $product_count,
-                "category_label" => $category_label,
+                "toast" => $this->toast(),
+                // "product_count" => $product_count,
+                // "category_label" => $category_label,
                 "success" => $this->session->flashdata("success"),
                 "error" => $this->session->flashdata("error")
             ));
@@ -171,15 +176,25 @@ class Products extends CI_Controller {
         $user = $this->session->userdata("user");
         
         if ($user) {
+            $csrf = array(
+                'name' => $this->security->get_csrf_token_name(),
+                'hash' => $this->security->get_csrf_hash()
+            );
             $product = $this->Product->getProductById($id);
             $images = json_decode($product["img_links"]);
             $this->load->view("partials/customer/header");
-            $this->load->view("partials/customer/nav", array("user" => $user));
+            $this->load->view("partials/customer/nav", array(
+                "user" => $user,
+                "cart_count" => $this->Cart->countItemInCart()
+            ));
             $this->load->view("products/view", array(
+                "csrf" => $csrf,
                 "product" => $product,
                 "images" => $images
             ));
-            $this->load->view("partials/customer/footer");
+            $this->load->view("partials/customer/footer", array(
+                "toast" => $this->toast()
+            ));
         } else {
             return redirect("login");
         }
@@ -247,11 +262,8 @@ class Products extends CI_Controller {
                 "user" => $user,
                 "csrf" => $csrf
             ));
-            $this->load->view("products/my-products", array(
-                "csrf" => $csrf,
-                "toast" => $this->toast()
-            ));
-            $this->load->view("partials/admin/footer");
+            $this->load->view("products/my-products", array("csrf" => $csrf));
+            $this->load->view("partials/admin/footer", array("toast" => $this->toast()));
         } else {
             return redirect("products");
         }
@@ -451,7 +463,7 @@ class Products extends CI_Controller {
      * @return html HTML toasters
      */
     private function toast() {
-        return $this->load->view("partials/admin/toast", array(
+        return $this->load->view("partials/toast", array(
             "success" => $this->session->flashdata("success"),
             "error" => $this->session->flashdata("error")
         ), TRUE);

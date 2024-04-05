@@ -20,30 +20,30 @@
             <div class="col-md-8 px-5">
                 <p class="fs-2 mb-1"><?= $product["name"]; ?></p>
                 <p class="mb-1 ratings">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <i class="bi bi-star-fill text-warning"></i>
-                    <span>36 Rating(s)</span>
+                    <i class="bi bi-list-columns-reverse text-warning"></i>
+                    <span>36 Review(s)</span>
                 </p>
-                <p class="fs-4">&#36; <?= $product["price"]; ?></p>
+                <p class="fs-4">&#36; <span id="price"><?= $product["price"]; ?></span></p>
                 <p><?= $product["description"]; ?></p>
-                <div class="row align-items-end">
+                <form action="<?= site_url("cart/add"); ?>" method="post" id="add_to_cart" class="row align-items-end">
+                    <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
                     <div class="col-md-3">
+                        <input type="hidden" name="product_id" value="<?= $product["id"] ?>">
                         <label for="quantity" class="form-label">Quantity</label>
                         <div class="input-group">
-                            <button class="btn btn-outline-secondary" type="button" id="decrement"><i class="bi bi-dash-lg"></i></button>
-                            <input type="number" min="1" max="50" value="1" class="form-control text-center">
-                            <button class="btn btn-outline-secondary" type="button" id="increment"><i class="bi bi-plus-lg"></i></button>
+                            <button class="btn btn-outline-secondary z-1" type="button" id="decrement"><i class="bi bi-dash-lg"></i></button>
+                            <input type="number" name="quantity" min="1" max="50" value="1" class="form-control text-center">
+                            <button class="btn btn-outline-secondary z-1" type="button" id="increment"><i class="bi bi-plus-lg"></i></button>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Total Amount</label>
-                        <p class="m-0 p-2 border">&#36; 50</p>
+                        <p class="m-0 p-2 border">&#36; <span id="total_amount"><?= $product["price"]; ?></span></p>
                     </div>
                     <div class="col-md-3 align-items-end">
-                        <button type="button" class="btn btn-bluegreen">Add to Cart</button>
+                        <input type="submit" value="Add to Cart" class="btn btn-bluegreen">
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <div class="row mb-4 bg-white rounded border shadow-sm px-3 py-5">
@@ -79,4 +79,6 @@
             </div>
         </div>
     </main>
-    <script src="<?= base_url("assets/js/product-images.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/customer/product-images.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/customer/add-to-cart.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/toast.js"); ?>"></script>

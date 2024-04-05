@@ -466,7 +466,10 @@ $config['csrf_exclude_uris'] = array(
     "product/create",
     "product/update",
     "my-products/admin-filter",
-    "products/admin-search/.*/.*"
+    "products/admin-search/.*/.*",
+    "cart/add",
+    "cart/update",
+    "cart/remove"
 );
 
 /*

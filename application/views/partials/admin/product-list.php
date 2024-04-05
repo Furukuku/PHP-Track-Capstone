@@ -15,7 +15,7 @@
 ?>
     <tr class="bg-light-subtle">
         <td class="p-3 rounded-start-3">
-            <img src="<?= base_url("uploads/products/" . trim($product["display_img"], '"')); ?>" class="object-fit-fill rounded" alt="product">
+            <img src="<?= base_url("uploads/products/{$product["display_img"]}"); ?>" class="object-fit-fill rounded" alt="product">
             <span class="ms-3"><?= $product["name"]; ?></span>
         </td>
         <td class="px-3 text-center product_id"><?= $product["id"]; ?></td>

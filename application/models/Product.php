@@ -16,7 +16,7 @@ class Product extends CI_Model {
      */
     public function getAllProducts() {
         return $this->db->query(
-            "SELECT products.*, FORMAT(products.price, 0) AS formatted_price, JSON_EXTRACT(products.img_links, '$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
+            "SELECT products.*, FORMAT(products.price, 2) AS formatted_price, JSON_UNQUOTE(products.img_links->'$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
             FROM products
             LEFT JOIN categories ON products.category_id = categories.id
             LEFT JOIN orders ON products.id = orders.product_id
@@ -33,7 +33,7 @@ class Product extends CI_Model {
      */
     public function getAllProductsByCategory($id) {
         return $this->db->query(
-            "SELECT products.*, FORMAT(products.price, 0) AS formatted_price, JSON_EXTRACT(products.img_links, '$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
+            "SELECT products.*, FORMAT(products.price, 2) AS formatted_price, JSON_UNQUOTE(products.img_links->'$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
             FROM products
             LEFT JOIN categories ON products.category_id = categories.id
             LEFT JOIN orders ON products.id = orders.product_id
@@ -64,7 +64,7 @@ class Product extends CI_Model {
 
         if ($id === "All") {
             $products = $this->db->query(
-                "SELECT products.*, FORMAT(products.price, 0) AS formatted_price, JSON_EXTRACT(products.img_links, '$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
+                "SELECT products.*, FORMAT(products.price, 2) AS formatted_price, JSON_UNQUOTE(products.img_links->'$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
                 FROM products
                 LEFT JOIN categories ON products.category_id = categories.id
                 LEFT JOIN orders ON products.id = orders.product_id
@@ -76,7 +76,7 @@ class Product extends CI_Model {
             )->result_array();
         } else {
             $products = $this->db->query(
-                "SELECT products.*, FORMAT(products.price, 0) AS formatted_price, JSON_EXTRACT(products.img_links, '$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
+                "SELECT products.*, FORMAT(products.price, 2) AS formatted_price, JSON_UNQUOTE(products.img_links->'$.default') AS display_img, categories.name AS category_name, COALESCE(SUM(orders.quantity), 0) AS sold
                 FROM products
                 LEFT JOIN categories ON products.category_id = categories.id
                 LEFT JOIN orders ON products.id = orders.product_id

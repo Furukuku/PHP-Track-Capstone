@@ -10,6 +10,7 @@
     });
 <?php
     }
+    
     if ($error) {
 ?>
     Toast.fire({

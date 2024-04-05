@@ -78,6 +78,7 @@ $route['product/categories'] = 'products/customerCategoryListHtml';
 $route['products/customer-search/(:any)/(:any)'] = 'products/customerSearch/$1/$2';
 $route['products/list'] = 'products/customerProductListHtml';
 $route['products/paginate/(:any)'] = 'products/customerPaginationHtml/$1';
+$route['cart/list'] = 'carts/itemListHtml';
 /* ---------------- End of GET Methods ---------------- */
 
 /* ---------------- Start of POST Methods ---------------- */
@@ -88,4 +89,9 @@ $route['user/logout'] = 'users/logout';
 $route['user/create'] = 'users/create';
 $route['product/create'] = 'products/create';
 $route['product/update'] = 'products/update';
+
+// Customer Routes
+$route['cart/add'] = 'carts/add';
+$route['cart/update'] = 'carts/update';
+$route['cart/remove'] = 'carts/remove';
 /* ---------------- End of POST Methods ---------------- */
