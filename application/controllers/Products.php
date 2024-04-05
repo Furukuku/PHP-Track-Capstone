@@ -12,6 +12,7 @@ class Products extends CI_Controller {
         $this->load->model("Product");
     }
 
+/* ------------------------------------------ Start of Customer Methods ------------------------------------------ */
     /**
      * Renders and displays the products dashboard
      * @return void
@@ -44,9 +45,90 @@ class Products extends CI_Controller {
     }
 
     /**
+     * Renders and displays the category list for customer
+     * @return void
+     */
+    public function customerCategoryListHtml() {
+        if ($this->session->userdata("user")) {
+            $csrf = array(
+                'name' => $this->security->get_csrf_token_name(),
+                'hash' => $this->security->get_csrf_hash()
+            );
+            $products = $this->Product->searchProducts()["count"];
+            $product_count = $products["count"];
+            $category_label = "All Products ({$product_count})";
+            $this->load->view("partials/customer/product-categories", array(
+                "categories" => $this->Category->getAllCategories(),
+                "product_count" => $product_count,
+                "csrf" => $csrf
+            ));
+        }
+    }
+
+    /**
+     * Handles the process for searching a product for customer
+     * @param int Id of a category
+     * @param int Offset for pagination
+     * @return void
+     */
+    public function customerSearch($category_id, $offset) {
+        if ($this->session->userdata("user")) {
+            $category = $category_id === "All" ? array("name" => "All Products") : $this->Category->getCategoryById($category_id);
+            $products = $this->Product->searchProducts($this->input->get("keyword"), $category_id, (($offset - 1) * 5))["products"];
+            $product_count = count($products);
+            $category_label = "{$category["name"]} ({$product_count})";
+            $this->load->view("partials/customer/product-list", array(
+                "products" => $products,
+                "category_label" => $category_label
+            ));
+        }
+    }
+
+    /**
+     * Renders the list of products for customer
+     * @return void
+     */
+    public function customerProductListHtml() {
+        if ($this->session->userdata("user")) {
+            $products = $this->Product->getAllProducts();
+            $product_count = count($products);
+            $category_label = "All Products ({$product_count})";
+            $this->load->view("partials/customer/product-list", array(
+                "products" => $products,
+                "category_label" => $category_label
+            ));
+        }
+    }
+
+    /**
+     * Renders and displays the products pagination for customer
+     * @param int Current page of pagination
+     * @return void
+     */
+    public function customerPaginationHtml($current_page) {
+        $products = array();
+
+        if ($this->input->get("keyword") && $this->input->get("category")) {
+            $products = $this->Product->searchProducts($this->input->get("keyword"), $this->input->get("category"))["count"];
+        } else if ($this->input->get("keyword")) {
+            $products = $this->Product->searchProducts($this->input->get("keyword"))["count"];
+        } else if ($this->input->get("category")) {
+            $products = $this->Product->searchProducts("", $this->input->get("category"))["count"];
+        } else {
+            $products = $this->Product->searchProducts()["count"];
+        }
+
+        $this->load->view("partials/customer/pagination", array(
+            "total_pages" => ceil($products["count"] / 5),
+            "current_page" => $current_page
+        ));
+    }
+
+    /**
      * Handles the process for filtering products based on category on customer side
      * @return void
      */
+    // REMOVE THIS LATER
     public function filter() {
         $user = $this->session->userdata("user");
         
@@ -82,6 +164,7 @@ class Products extends CI_Controller {
 
     /**
      * Renders and displays a specific product
+     * @param int Id of a product
      * @return void
      */
     public function viewProduct($id) {
@@ -101,6 +184,10 @@ class Products extends CI_Controller {
             return redirect("login");
         }
     }
+
+/* ------------------------------------------ End of Customer Methods ------------------------------------------ */
+
+/* ------------------------------------------ Start of Admin Methods ------------------------------------------ */
 
     /**
      * Renders and displays the form for adding product
@@ -155,8 +242,6 @@ class Products extends CI_Controller {
                 'name' => $this->security->get_csrf_token_name(),
                 'hash' => $this->security->get_csrf_hash()
             );
-            $product_count = count($this->Product->getAllProducts());
-            $category_label = "All Products ({$product_count})";
             $this->load->view("partials/admin/header");
             $this->load->view("partials/admin/nav", array(
                 "user" => $user,
@@ -164,8 +249,7 @@ class Products extends CI_Controller {
             ));
             $this->load->view("products/my-products", array(
                 "csrf" => $csrf,
-                "success" => $this->session->flashdata("success"),
-                "error" => $this->session->flashdata("error")
+                "toast" => $this->toast()
             ));
             $this->load->view("partials/admin/footer");
         } else {
@@ -192,7 +276,8 @@ class Products extends CI_Controller {
     }
 
     /**
-     * Renders and displays the pagination
+     * Renders and displays the pagination of products for admin
+     * @param int Current page of pagination
      * @return void
      */
     public function paginationHtml($current_page) {
@@ -226,8 +311,8 @@ class Products extends CI_Controller {
                 'name' => $this->security->get_csrf_token_name(),
                 'hash' => $this->security->get_csrf_hash()
             );
-            $products = $this->Product->getAllProducts();
-            $product_count = count($products);
+            $products = $this->Product->searchProducts()["count"];
+            $product_count = $products["count"];
             $category_label = "All Products ({$product_count})";
             $this->load->view("partials/admin/product-categories", array(
                 "categories" => $this->Category->getAllCategories(),
@@ -260,14 +345,16 @@ class Products extends CI_Controller {
     }
 
     /**
-     * Handles the process for searching a product
+     * Handles the process for searching a product for admin
+     * @param int Id of a category
+     * @param int Offset of pagination
      * @return void
      */
     public function adminSearch($category_id, $offset) {
         $user = $this->session->userdata("user");
 
         if ($user && $user["is_admin"] == 1) {
-            $category = $category_id === "All" ? array("name" => "All") : $this->Category->getCategoryById($category_id);
+            $category = $category_id === "All" ? array("name" => "All Products") : $this->Category->getCategoryById($category_id);
             $products = $this->Product->searchProducts($this->input->get("keyword"), $category_id, (($offset - 1) * 5))["products"];
             $product_count = count($products);
             $category_label = "{$category["name"]} ({$product_count})";
@@ -344,6 +431,7 @@ class Products extends CI_Controller {
 
     /**
      * Handles the deletion process of a product
+     * @param int Id of a product
      * @return void Redirects to admin's dashboard if success
      */
     public function delete($id) {
@@ -355,6 +443,8 @@ class Products extends CI_Controller {
 
         echo json_encode($this->toast());
     }
+
+/* ------------------------------------------ End of Admin Methods ------------------------------------------ */
 
     /**
      * Renders the toasters

@@ -89,8 +89,6 @@ class Product extends CI_Model {
             )->result_array();
         }
 
-        // var_dump($this->countProducts($id, $keyword));
-        // die();
         return array(
             "products" => $products,
             "count" => $this->countProducts($id, $keyword)
@@ -102,7 +100,6 @@ class Product extends CI_Model {
      * @param int Id of a category
      * @return int Number of product count
      */
-    // CONTINUE HERE!!!!
     public function countProducts($category_id = "All", $keyword) {
         if ($category_id === "All") {
             return $this->db->query(

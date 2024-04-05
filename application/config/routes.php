@@ -56,26 +56,36 @@ $route['translate_uri_dashes'] = FALSE;
 /* ---------------- Start of GET Methods ---------------- */
 $route['login'] = 'users/login';
 $route['sign-up'] = 'users/signup';
-$route['products'] = 'products/index';
-$route['products/filter'] = 'products/filter';
-$route['my-products/admin-filter'] = 'products/adminFilter';
-$route['products/view/(:any)'] = 'products/viewProduct/$1';
-$route['cart'] = 'carts/index';
+
+// Admin Routes
 $route['my-products'] = 'products/myProducts';
-$route['forms/add-product'] = 'products/addProductHtml';
-$route['forms/edit-product/(:any)'] = 'products/editProductHtml/$1';
-$route['orders'] = 'orders/index';
+$route['my-products/admin-filter'] = 'products/adminFilter';
 $route['product/delete/(:any)'] = 'products/delete/$1';
 $route['my-products/list'] = 'products/adminProductListHtml';
 $route['my-products/categories'] = 'products/adminCategoryListHtml';
-$route['products/admin-search/(:any)/(:any)'] = 'products/adminSearch/$1/$2';
+$route['forms/add-product'] = 'products/addProductHtml';
+$route['forms/edit-product/(:any)'] = 'products/editProductHtml/$1';
 $route['my-products/paginate/(:any)'] = 'products/paginationHtml/$1';
+$route['orders'] = 'orders/index';
+$route['products/admin-search/(:any)/(:any)'] = 'products/adminSearch/$1/$2';
+
+// Customer Routes
+$route['products'] = 'products/index';
+$route['products/filter'] = 'products/filter';
+$route['products/view/(:any)'] = 'products/viewProduct/$1';
+$route['cart'] = 'carts/index';
+$route['product/categories'] = 'products/customerCategoryListHtml';
+$route['products/customer-search/(:any)/(:any)'] = 'products/customerSearch/$1/$2';
+$route['products/list'] = 'products/customerProductListHtml';
+$route['products/paginate/(:any)'] = 'products/customerPaginationHtml/$1';
 /* ---------------- End of GET Methods ---------------- */
 
 /* ---------------- Start of POST Methods ---------------- */
-$route['user/create'] = 'users/create';
 $route['user/login'] = 'users/loginUser';
 $route['user/logout'] = 'users/logout';
+
+// Admin Routes
+$route['user/create'] = 'users/create';
 $route['product/create'] = 'products/create';
 $route['product/update'] = 'products/update';
 /* ---------------- End of POST Methods ---------------- */

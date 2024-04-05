@@ -6,7 +6,7 @@ if ($total_pages > 1) {
     for ($link = 1; $link <= $total_pages; $link++) {
         if ($current_page == $link) {
 ?>
-    <li class="page-item"><p class="page-link text-body-secondary bg-light-subtle active"><?= $link; ?></p></li>
+    <li class="page-item"><p class="page-link text-body-secondary bg-light-subtle"><?= $link; ?></p></li>
 <?php
         } else {
 ?>

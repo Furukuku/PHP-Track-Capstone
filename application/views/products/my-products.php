@@ -42,10 +42,8 @@
             </div>
         </div>
     </div>
-
-    <script src="<?= base_url("assets/js/categories-filter.js"); ?>"></script>
-    <script src="<?= base_url("assets/js/add-product.js"); ?>"></script>
-    <script src="<?= base_url("assets/js/edit-product.js"); ?>"></script>
-    <script src="<?= base_url("assets/js/delete-product.js"); ?>"></script>
-    <script src="<?= base_url("assets/js/pagination.js"); ?>"></script>
-    <script src="<?= base_url("assets/js/toast.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/admin/categories-filter.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/admin/add-product.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/admin/edit-product.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/admin/delete-product.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/admin/pagination.js"); ?>"></script>
