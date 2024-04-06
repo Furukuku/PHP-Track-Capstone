@@ -14,4 +14,4 @@
     <script src="<?= base_url("assets/js/customer/search.js"); ?>"></script>
     <script src="<?= base_url("assets/js/customer/pagination.js"); ?>"></script>
     <script src="<?= base_url("assets/js/toast.js"); ?>"></script>
-    <?= $toast; ?> <!-- Continue HERE!!!! -->
+    <?= $toast; ?>

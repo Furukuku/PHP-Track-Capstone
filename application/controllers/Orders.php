@@ -3,6 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Orders extends CI_Controller {
     /**
+     * Loads the necessary models
+     * @return void
+     */
+    public function __construct() {
+        parent::__construct();
+        $this->load->model("Order");
+    }
+
+    /**
      * Renders and displays the product dashboard of the admin
      * @return void
      */
@@ -19,5 +28,16 @@ class Orders extends CI_Controller {
         } else {
             return redirect("products");
         }
+    }
+
+    /**
+     * Handles the success process of placing order
+     * @return void
+     */
+    public function successPayment() {
+        // if ($this->Order->createOrder()) {
+        // }
+        $this->Order->createOrder();
+        return redirect("cart"); //CONTINUE HERE
     }
 }

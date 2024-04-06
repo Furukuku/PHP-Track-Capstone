@@ -121,11 +121,11 @@ class User extends CI_Model {
     }
 
     /**
-     * XSS Filters the data of the user
-     * @param array Array of user's data
-     * @return array Array of cleaned user's data
+     * XSS Filters the data
+     * @param array Array of data
+     * @return array Array of cleaned data
      */
-    private function xssFilter($data) {
+    public function xssFilter($data) {
         $filtered_data = array();
 
         foreach ($data as $key => $item) {
@@ -134,5 +134,4 @@ class User extends CI_Model {
 
         return $filtered_data;
     }
-
 }

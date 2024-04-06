@@ -45,6 +45,16 @@ class Product extends CI_Model {
     }
 
     /**
+     * Gets all the similar products of a specific product
+     * @param int Id of the product
+     * @param int Catagory id of a product
+     * @return array Array of similar products
+     */
+    public function getSimilarProducts($id, $category_id) {
+        return $this->db->query("SELECT *, JSON_UNQUOTE(img_links->'$.default') AS display_img FROM products WHERE id != ? AND category_id = ?;", array($id, $category_id))->result_array();
+    }
+
+    /**
      * Gets a product based on id
      * @param int Id of the product
      * @return array Array of the products and it count

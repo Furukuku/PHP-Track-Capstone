@@ -34,14 +34,8 @@ class Products extends CI_Controller {
                 "cart_count" => $this->Cart->countItemInCart()
             ));
             $this->load->view("products/index", array(
-                // "categories" => $this->Category->getAllCategories(),
-                // "products" => $this->Product->getAllProducts(),
                 "csrf" => $csrf,
                 "toast" => $this->toast(),
-                // "product_count" => $product_count,
-                // "category_label" => $category_label,
-                "success" => $this->session->flashdata("success"),
-                "error" => $this->session->flashdata("error")
             ));
             $this->load->view("partials/customer/footer");
         } else {
@@ -181,6 +175,7 @@ class Products extends CI_Controller {
                 'hash' => $this->security->get_csrf_hash()
             );
             $product = $this->Product->getProductById($id);
+            $similar_products = $product ? $this->Product->getSimilarProducts($product["id"], $product["category_id"]) : array();
             $images = json_decode($product["img_links"]);
             $this->load->view("partials/customer/header");
             $this->load->view("partials/customer/nav", array(
@@ -190,7 +185,8 @@ class Products extends CI_Controller {
             $this->load->view("products/view", array(
                 "csrf" => $csrf,
                 "product" => $product,
-                "images" => $images
+                "images" => $images,
+                "similar_products" => $similar_products
             ));
             $this->load->view("partials/customer/footer", array(
                 "toast" => $this->toast()

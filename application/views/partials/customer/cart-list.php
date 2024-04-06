@@ -16,7 +16,7 @@ foreach ($items as $key => $item) {
             <label class="form-label">Quantity</label>
             <div class="input-group">
                 <button class="btn btn-outline-secondary decrement" data-key="<?= $key; ?>" type="button"><i class="bi bi-dash-lg"></i></button>
-                <input type="number" name="quantity" min="1" max="50" value="<?= $item["quantity"]; ?>" class="form-control text-center" data-key="<?= $key; ?>">
+                <input type="number" name="quantity" readonly min="1" max="50" value="<?= $item["quantity"]; ?>" class="form-control text-center" data-key="<?= $key; ?>">
                 <button class="btn btn-outline-secondary increment" data-key="<?= $key; ?>" type="button"><i class="bi bi-plus-lg"></i></button>
             </div>
         </form>
@@ -24,7 +24,7 @@ foreach ($items as $key => $item) {
             <label class="form-label">Total Amount</label>
             <p class="m-0 p-2 border">&#36; <span id="total_amount<?= $key; ?>"><?= $item["amount"]; ?></span></p>
         </div>
-        <i class="bi bi-cart-x fs-3 remove_to_cart" data-bs-toggle="modal" data-bs-target="#remove_item_modal"></i>
+        <i class="bi bi-cart-x fs-3 remove_to_cart" data-name="<?= $item["name"]; ?>" data-bs-toggle="modal" data-bs-target="#remove_item_modal"></i>
     </div>
 </article>
 <?php

@@ -79,6 +79,8 @@ $route['products/customer-search/(:any)/(:any)'] = 'products/customerSearch/$1/$
 $route['products/list'] = 'products/customerProductListHtml';
 $route['products/paginate/(:any)'] = 'products/customerPaginationHtml/$1';
 $route['cart/list'] = 'carts/itemListHtml';
+$route['cart/search'] = 'carts/search';
+$route['order/success-payment'] = 'orders/successPayment';
 /* ---------------- End of GET Methods ---------------- */
 
 /* ---------------- Start of POST Methods ---------------- */
@@ -94,4 +96,5 @@ $route['product/update'] = 'products/update';
 $route['cart/add'] = 'carts/add';
 $route['cart/update'] = 'carts/update';
 $route['cart/remove'] = 'carts/remove';
+$route['cart/checkout'] = 'carts/checkout';
 /* ---------------- End of POST Methods ---------------- */

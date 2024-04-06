@@ -69,14 +69,55 @@ class Cart extends CI_Model {
      * Gets all the user's item in cart
      * @return array Array of items of the user
      */
+    // REMOVE THIS LATER
     public function getAllItemInCart() {
         return $this->db->query(
             "SELECT carts.*, FORMAT(carts.quantity * products.price, 2) AS amount, products.name AS name, products.price AS price, JSON_UNQUOTE(products.img_links->'$.default') AS img
             FROM carts 
             LEFT JOIN products ON carts.product_id = products.id
-            WHERE carts.user_id = 4 
+            WHERE carts.user_id = ? 
             ORDER BY created_at DESC;", 
             array($this->session->userdata("user")["id"])
         )->result_array();
+    }
+
+    /**
+     * Searches user's item in cart
+     * @param string keyword to search
+     * @return array Array of items of the user
+     */
+    public function searchItemInCart($keyword = "") {
+        return $this->db->query(
+            "SELECT carts.*, FORMAT(carts.quantity * products.price, 2) AS amount, products.name AS name, products.price AS price, JSON_UNQUOTE(products.img_links->'$.default') AS img
+            FROM carts 
+            LEFT JOIN products ON carts.product_id = products.id
+            WHERE carts.user_id = ? AND products.name LIKE ?
+            ORDER BY carts.created_at DESC;", 
+            array($this->session->userdata("user")["id"], "%{$keyword}%")
+        )->result_array();
+    }
+
+    /**
+     * Counts the total amount of the items in cart
+     * @return array Array
+     */
+    public function countTotalAmountToPay() {
+        $amount = $this->db->query(
+            "SELECT SUM(FORMAT(carts.quantity * products.price, 2)) AS total_amount
+            FROM carts 
+            LEFT JOIN products ON carts.product_id = products.id
+            WHERE carts.user_id = ?
+            GROUP BY carts.user_id;", 
+            array($this->session->userdata("user")["id"])
+        )->row_array();
+        return $amount ? $amount["total_amount"] : 0;
+    }
+
+    /**
+     * Removes all ordered items in cart
+     * @return bool True if successfully removed
+     */
+    public function removeItemsInCart() {
+        return $this->db->query("DELETE FROM carts WHERE user_id = ?;", array($this->session->userdata("user")["id"]));
     }
 }

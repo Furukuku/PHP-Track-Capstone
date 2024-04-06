@@ -63,11 +63,9 @@ $(document).on("input", "input[name='quantity']", function() {
 
 $(document).on("submit", ".cart_item_update_form", function() {
     $.post($(this).attr("action"), $(this).serialize(), function(res) {
-        $("body").append(res.toast);
-        $("#cart_count").text(res.cart);
-        $("input[name='quantity']").val(1);
-        const price = parseFloat($("#price").text());
-        $("#total_amount").text(parseFloat(price.toFixed(2)));
+        $("#total_amount").text("$ " + res.total_amount);
+        $("#shipping_fee").text("$ " + res.shipping_fee);
+        $("#to_pay").text("$ " + res.to_pay);
     }, "json");
 
     return false;
@@ -80,13 +78,20 @@ $(document).on("click", "#remove_item_btn", function() {
 $(document).on("click", ".remove_to_cart", function() {
     const itemId = $(this).siblings("form").children("input[name='item_id']").val();
     $("#remove_form").children("input[name='item_id']").val(itemId);
+    const itemName = $(this).data("name");
+    console.log(itemName);
+    $("#remove_form").append(`<p>Are you sure you want to remove "${itemName}" from your cart?</p>`);
 });
 
 $(document).on("submit", "#remove_form", function() {
     $.post($(this).attr("action"), $(this).serialize(), function(res) {
         $("body").append(res.toast);
         $("#item_list_container").html(res.html);
+        $("#cart_count").text(res.cart);
         $("#remove_item_modal").modal("hide");
+        $("#total_amount").text("$ " + res.checkout.total_amount);
+        $("#shipping_fee").text("$ " + res.checkout.shipping_fee);
+        $("#to_pay").text("$ " + res.checkout.to_pay);
     }, "json");
 
     return false;
@@ -94,4 +99,5 @@ $(document).on("submit", "#remove_form", function() {
 
 $("#remove_item_modal").on("hidden.bs.modal", function() {
     $("#remove_form").children("input[name='item_id']").removeAttr("value");
+    $("#remove_form").children("p").remove();
 });

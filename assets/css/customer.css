@@ -34,18 +34,22 @@ form div a {
 }
 
 article.product_cards {
-    width: 17rem;
+    width: 13.5rem;
 
     a {
         text-decoration: none;
         color: #000;
 
         .img_container {
-            height: 10rem;
+            height: 8rem;
+        }
+
+        p {
+            font-size: 0.8rem;
         }
     
         .ratings {
-            font-size: 0.8rem;
+            font-size: 0.6rem;
         }
     }
 
