@@ -84,7 +84,8 @@ class Products extends CI_Controller {
     }
 
     /**
-     * 
+     * Renders the similar product list
+     * @return void
      */
     public function searchSimilarProducts() {
         $product = $this->Product->getProductById($this->input->get("id"));
@@ -134,44 +135,6 @@ class Products extends CI_Controller {
             "total_pages" => ceil($products["count"] / 5),
             "current_page" => $current_page
         ));
-    }
-
-    /**
-     * Handles the process for filtering products based on category on customer side
-     * @return void
-     */
-    // REMOVE THIS LATER
-    public function filter() {
-        $user = $this->session->userdata("user");
-        
-        if ($user) {
-            $csrf = array(
-                'name' => $this->security->get_csrf_token_name(),
-                'hash' => $this->security->get_csrf_hash()
-            );
-            $category = $this->Category->getCategoryById($this->input->get("category"));
-
-            if ($category == null) {
-                return redirect("products");
-            }
-
-            $product_count = count($this->Product->getAllProductsByCategory($this->input->get("category")));
-            $category_label = "{$category["name"]} ({$product_count})";
-            $this->load->view("partials/customer/header");
-            $this->load->view("partials/customer/nav", array("user" => $user));
-            $this->load->view("products/index", array(
-                "categories" => $this->Category->getAllCategories(),
-                "products" => $this->Product->getAllProductsByCategory($this->input->get("category")),
-                "csrf" => $csrf,
-                "product_count" => count($this->Product->getAllProducts()),
-                "category_label" => $category_label,
-                "success" => $this->session->flashdata("success"),
-                "error" => $this->session->flashdata("error")
-            ));
-            $this->load->view("partials/customer/footer");
-        } else {
-            return redirect("login");
-        }
     }
 
     /**
@@ -344,28 +307,6 @@ class Products extends CI_Controller {
     }
 
     /**
-     * Handles the process for filtering products based on category
-     * @return void
-     */
-    //REMOVE THIS LATER
-    public function adminFilter() {
-        $user = $this->session->userdata("user");
-
-        if ($this->input->get("category") === "All") {
-            $this->adminProductListHtml();
-        } else if ($user && $user["is_admin"] == 1) {
-            $category = $this->Category->getCategoryById($this->input->get("category"));
-            $products = $this->Product->getAllProductsByCategory($this->input->get("category"));
-            $product_count = count($products);
-            $category_label = "{$category["name"]} ({$product_count})";
-            $this->load->view("partials/admin/product-list", array(
-                "products" => $products,
-                "category_label" => $category_label
-            ));
-        }
-    }
-
-    /**
      * Handles the process for searching a product for admin
      * @param int Id of a category
      * @param int Offset of pagination
@@ -469,6 +410,8 @@ class Products extends CI_Controller {
 
     /**
      * Renders the toasters
+     * @param string Name of success flashdata
+     * @param string Name of error flashdata
      * @return html HTML toasters
      */
     private function toast() {

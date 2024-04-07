@@ -40,9 +40,6 @@ $(document).on("submit", "form.update_status_form", function() {
 
     $.post($(this).attr("action"), $(this).serialize(), function(res) {
         $("body").append(res);
-        // $.get(`/order/category-filter?status=${status}`, function(res) {
-        //     $("table.order_table").html(res);
-        // });
         const searchData = `offset=1&${$("#admin_form_search").serialize()}`;
         $.get(`/order/search/${status}`, searchData, function(res) {
             $("table.order_table").html(res);

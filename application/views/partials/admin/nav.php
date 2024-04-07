@@ -1,13 +1,13 @@
     <header class="position-fixed top-0 end-0 p-3 d-flex bg-dark-subtle justify-content-between shadow-sm z-1">
-        <h2 class="text-white">Hello Again</h2>
+        <h2 class="text-white">Village88</h2>
         <div class="d-flex align-items-center gap-3">
             <a href="<?= site_url("products"); ?>" class="btn btn-outline-info">Switch to Shop View</a>
             <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><?= $user["first_name"]; ?></a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="<?= site_url("user/logout"); ?>">Logout</a></li>
-            </ul>
-        </div>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><?= $user["first_name"]; ?></a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="<?= site_url("user/logout"); ?>">Logout</a></li>
+                </ul>
+            </div>
         </div>
     </header>
     <nav class="position-fixed start-0 top-0 bottom-0 px-4 py-2 z-1 bg-dark-subtle sidebar">

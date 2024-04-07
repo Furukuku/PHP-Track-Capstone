@@ -69,8 +69,6 @@ $(document).on("input", "input[name='quantity']", function() {
 
 $(document).on("submit", ".cart_item_update_form", function() {
     $.post($(this).attr("action"), $(this).serialize(), function(res) {
-        // $("#item_list_container").html(res.html);
-        // console.log(res.html);
         $("#total_amount").text("$ " + res.total_amount);
         $("#shipping_fee").text("$ " + res.shipping_fee);
         $("#to_pay").text("$ " + res.to_pay);

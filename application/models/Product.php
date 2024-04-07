@@ -113,7 +113,7 @@ class Product extends CI_Model {
     public function countProducts($category_id = "All", $keyword) {
         if ($category_id === "All") {
             return $this->db->query(
-                "SELECT COUNT(products.id) AS count
+                "SELECT COUNT(DISTINCT products.id) AS count
                 FROM products
                 LEFT JOIN categories ON products.category_id = categories.id
                 LEFT JOIN orders ON products.id = orders.product_id
@@ -122,7 +122,7 @@ class Product extends CI_Model {
             )->row_array();
         } else {
             return $this->db->query(
-                "SELECT COUNT(products.id) AS count
+                "SELECT COUNT(DISTINCT products.id) AS count
                 FROM products
                 LEFT JOIN categories ON products.category_id = categories.id
                 LEFT JOIN orders ON products.id = orders.product_id
@@ -378,7 +378,7 @@ class Product extends CI_Model {
 
         $config["upload_path"] = $path;
         $config["allowed_types"] = "gif|jpg|jpeg|png";
-        $config["max_size"] = 2048;
+        $config["max_size"] = 1024 * 4;
         $config["encrypt_name"] = TRUE;
         $this->load->library('upload', $config);
         $this->upload->initialize($config);

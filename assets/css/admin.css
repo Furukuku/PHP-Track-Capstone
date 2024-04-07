@@ -49,3 +49,8 @@ textarea {
 .error {
     font-size: 0.75rem;
 }
+
+.category_list,
+.order_status {
+    cursor: pointer;
+}

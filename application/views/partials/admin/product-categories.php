@@ -1,4 +1,4 @@
-<li id="category_all" class="mb-2 border rounded-3 bg-light-subtle border-light shadow-sm position-relative">
+<li id="category_all" class="mb-2 border rounded-3 bg-light-subtle border-light shadow-sm position-relative category_list">
     <form action="#" method="get" class="p-3 form_categories">
         <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
         <input type="hidden" name="category" value="All">
@@ -10,7 +10,7 @@
 <?php
 foreach ($categories as $category) {
 ?>
-<li id="category<?= $category["id"]; ?>" class="mb-2 border rounded-3 bg-light-subtle shadow-sm position-relative">
+<li id="category<?= $category["id"]; ?>" class="mb-2 border rounded-3 bg-light-subtle shadow-sm position-relative category_list">
     <form action="#" method="get" class="p-3 form_categories">
         <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
         <input type="hidden" name="category" value="<?= $category["id"]; ?>">

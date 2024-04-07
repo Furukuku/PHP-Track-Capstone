@@ -89,8 +89,6 @@ class Orders extends CI_Controller {
         
         if ($this->input->get()) {
             $orders = $this->Order->getAllOrders($this->input->get("status"), $this->input->get("keyword"))["count"];
-            // var_dump($orders);
-            // die();
         } else {
             $orders = $this->Order->getAllOrders()["count"];
         }
@@ -139,6 +137,8 @@ class Orders extends CI_Controller {
 
     /**
      * Renders the toasters
+     * @param string Name of success flashdata
+     * @param string Name of error flashdata
      * @return html HTML toasters
      */
     private function toast($success, $error) {

@@ -59,20 +59,6 @@ class Carts extends CI_Controller {
     }
 
     /**
-     * Renders the forms for order informations
-     * @return void
-     */
-    // REMOVE THIS LATER
-    public function orderFormHtml() {
-        $this->load->view("partials/forms/order-information", array(
-            "values" => $this->input->post(),
-            "shipping_fee" => $this->shipping_fee,
-            "total_amount" => $this->Cart->countTotalAmountToPay(),
-            "errors" => $this->session->flashdata("errors")
-        ));
-    }
-
-    /**
      * Handles the searching in cart
      * @return void
      */

@@ -1,5 +1,6 @@
 <?php
-foreach ($items as $key => $item) {
+if (!empty($items)) {
+    foreach ($items as $key => $item) {
 ?>
 <article class="d-flex flex-wrap justify-content-between align-items-center mb-3 border py-2 px-3 bg-white shadow-sm rounded items_in_cart">
     <div class="d-flex align-items-center cart_item_img">
@@ -28,6 +29,11 @@ foreach ($items as $key => $item) {
         <i class="bi bi-cart-x fs-3 remove_to_cart" data-name="<?= $item["name"]; ?>" data-bs-toggle="modal" data-bs-target="#remove_item_modal"></i>
     </div>
 </article>
+<?php
+    }
+} else {
+?>
+    <p class="text-center my-5 fs-3">No Items in Cart</p>
 <?php
 }
 ?>

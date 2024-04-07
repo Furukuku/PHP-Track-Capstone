@@ -1,5 +1,5 @@
     <header class="position-fixed top-0 start-0 end-0 border p-3 ps-5 bg-white d-flex justify-content-between align-items-center shadow-sm z-2">
-        <h2 class="ms-5 text-secondary">Hello Again</h2>
+        <h2 class="ms-5 text-secondary">Village88</h2>
 <?php
         if ($user["is_admin"] == 1) {
 ?>
