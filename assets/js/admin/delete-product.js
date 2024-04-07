@@ -15,7 +15,7 @@ $(document).ready(function() {
             $("body").append(res);
             const categoryId = $("li.border-light").attr("id");
             $.get("/my-products/categories", function(res) {
-                $(".categories").html(res);
+                $(".product_categories").html(res);
                 $(`#${categoryId}`).children().submit();
                 $(`#${categoryId}`).siblings().removeClass("border-light");
                 $(`#${categoryId}`).addClass("border-light");

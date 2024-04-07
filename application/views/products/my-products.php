@@ -2,10 +2,10 @@
         <div class="row gx-4 pb-5">
             <div class="col-md-2 mt-3">
                 <p>Categories</p>
-                <ul class="p-0 overflow-y-auto pt-1 categories"></ul>
+                <ul class="p-0 overflow-y-auto pt-1 product_categories"></ul>
             </div>
             <div class="col-md-10">
-                <table class="w-100"></table>
+                <table id="product_table" class="w-100"></table>
                 <nav id="pagination_container" aria-label="Page navigation"></nav>
             </div>
         </div>

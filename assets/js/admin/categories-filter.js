@@ -1,10 +1,10 @@
 $(document).ready(function() {
     $.get("/my-products/categories", function(res) {
-        $(".categories").html(res);
+        $(".product_categories").html(res);
     });
 
     $.get("/my-products/list", function(res) {
-        $("table").html(res);
+        $("table#product_table").html(res);
     });
 
     $(document).on("click", ".form_categories", function(e) {
@@ -18,7 +18,7 @@ $(document).ready(function() {
         });
 
         $.get(`/products/admin-search/${$(this).children("input[name='category']").val()}/1`, $("#admin_form_search").serialize(), function(res) {
-            $("table").html(res);
+            $("table#product_table").html(res);
         });
 
         return false;

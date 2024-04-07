@@ -68,6 +68,11 @@ $route['forms/edit-product/(:any)'] = 'products/editProductHtml/$1';
 $route['my-products/paginate/(:any)'] = 'products/paginationHtml/$1';
 $route['orders'] = 'orders/index';
 $route['products/admin-search/(:any)/(:any)'] = 'products/adminSearch/$1/$2';
+$route['order/category-filter'] = 'orders/categoryFilter';
+$route['order/category-list'] = 'orders/categoryList';
+$route['order/list'] = 'orders/orderList';
+$route['order/search/(:any)'] = 'orders/searchOrders/$1';
+$route['orders/paginate/(:any)'] = 'orders/paginationHtml/$1';
 
 // Customer Routes
 $route['products'] = 'products/index';
@@ -91,6 +96,7 @@ $route['user/logout'] = 'users/logout';
 $route['user/create'] = 'users/create';
 $route['product/create'] = 'products/create';
 $route['product/update'] = 'products/update';
+$route['order/update'] = 'orders/updateStatus';
 
 // Customer Routes
 $route['cart/add'] = 'carts/add';

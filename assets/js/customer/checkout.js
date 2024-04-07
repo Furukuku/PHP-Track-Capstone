@@ -16,8 +16,10 @@ $(document).on("click", "#checkout_btn", function() {
     $.post("/cart/checkout", formData, function(res) {
         if (res.status === "success") {
             window.location.href = res.url;
-        } else {
+        } else if (res.status === "error") {
             $("#order_info_container").html(res.html);
+        } else if (res.status === "invalid") {
+            $("body").append(res.toast);
         }
         
         if ($("#same_billing").is(":checked")) {

@@ -9,7 +9,7 @@ $(document).ready(function() {
         // const currentPage = parseInt(url.substring(22)) + 1;
         // console.log(currentPage);
         $.get(`/products/admin-search/${currentCategory}/${$(this).text()}`, $("#admin_form_search").serialize(), function(res) {
-            $("table").html(res);
+            $("table#product_table").html(res);
         });
         
         const formData = $("li.border-light").children("form").serialize() + '&' + $("#admin_form_search").serialize();

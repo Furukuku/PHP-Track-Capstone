@@ -156,7 +156,6 @@ class Carts extends CI_Controller {
             "total_amount" => $this->Cart->countTotalAmountToPay(),
             "to_pay" => $this->shipping_fee + $this->Cart->countTotalAmountToPay()
         );
-
         $response = array(
             "html" => $html,
             "checkout" => $checkout,
@@ -226,6 +225,13 @@ class Carts extends CI_Controller {
                 $response = array(
                     "status" => "success",
                     "url" => $checkout_session->url
+                );
+                echo json_encode($response);
+            } else {
+                $this->session->set_flashdata("no_items_to_pay", "You have no items to pay!");
+                $response = array(
+                    "status" => "invalid",
+                    "toast" => $this->toast("items_paid", "no_items_to_pay")
                 );
                 echo json_encode($response);
             }

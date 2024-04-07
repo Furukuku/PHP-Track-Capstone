@@ -24,11 +24,12 @@ class Order extends CI_Model {
         $shipping_id = $this->Shipping->createShipping($order_info);
         
         if ($billing_id !== false && $shipping_id !== false) {
-            $query = "INSERT INTO orders (product_id, billing_information_id, shipping_information_id, quantity, amount, created_at, updated_at) VALUES ";
+            $query = "INSERT INTO orders (user_id, product_id, billing_information_id, shipping_information_id, quantity, amount, created_at, updated_at) VALUES ";
             $values = array();
             
             foreach ($orders as $key => $order) {
-                $query .= $key == (count($orders) - 1) ? "(?, ?, ?, ?, ?, NOW(), NOW());" : " (?, ?, ?, ?, ?, NOW(), NOW()),";
+                $query .= $key == (count($orders) - 1) ? "(?, ?, ?, ?, ?, ?, NOW(), NOW());" : " (?, ?, ?, ?, ?, ?, NOW(), NOW()),";
+                $values[] = $this->session->userdata("user")["id"];
                 $values[] = $order["product_id"];
                 $values[] = $billing_id;
                 $values[] = $shipping_id;
@@ -43,6 +44,75 @@ class Order extends CI_Model {
         }
 
         return false;
+    }
+
+    /**
+     * Updates the status of an order
+     * @param array Array of order id and status name
+     * @return bool True if successfully updated
+     */
+    public function updateOrderStatus($data) {
+        return $this->db->query("UPDATE orders SET status = ?, updated_at = NOW() WHERE id = ?;", array($data["status"], $data["id"]));
+    }
+
+    /**
+     * Gets all orders of all users
+     * @param string Status of orders
+     * @param string Keyword to search
+     * @return array Array of orders
+     */
+    public function getAllOrders($status = "All Orders", $keyword = "", $offset = 0) {
+        $query = 
+            "SELECT orders.*, DATE_FORMAT(orders.created_at, '%m-%d-%Y') AS order_date, 
+            JSON_UNQUOTE(products.img_links->'$.default') AS display_img, products.name AS product_name,
+            CONCAT(shipping_informations.first_name, ' ', shipping_informations.last_name) AS customer_name,
+            shipping_informations.address_1
+            FROM orders
+            LEFT JOIN products ON orders.product_id = products.id
+            LEFT JOIN shipping_informations ON orders.shipping_information_id = shipping_informations.id 
+            WHERE (products.name LIKE ? OR shipping_informations.first_name LIKE ? OR shipping_informations.last_name LIKE ?)";
+        $values = array("%{$keyword}%", "%{$keyword}%", "%{$keyword}%");
+
+        if ($status != "All Orders") {
+            $query .= " AND orders.status = ?";
+            $values[] = $status;
+        }
+
+        $query .= "LIMIT ?, 5;";
+        $values[] = $offset;
+
+
+        // return $this->db->query($query, $values)->result_array();
+        return array(
+            "orders" => $this->db->query($query, $values)->result_array(),
+            "count" => $this->countOrdersByStatus($status, $keyword)
+        );
+    }
+
+    /**
+     * Counts the orders based on status
+     * @param string Status name
+     * @param string Keyword to search
+     * @return int Count of orders
+     */
+    public function countOrdersByStatus($status, $keyword = "") {
+        $orders = array("count" => 0);
+        $query = 
+            "SELECT COUNT(*) AS count 
+            FROM orders
+            LEFT JOIN products ON orders.product_id = products.id
+            LEFT JOIN shipping_informations ON orders.shipping_information_id = shipping_informations.id 
+            WHERE (products.name LIKE ? OR shipping_informations.first_name LIKE ? OR shipping_informations.last_name LIKE ?)";
+        $values = array("%{$keyword}%", "%{$keyword}%", "%{$keyword}%");
+
+        if ($status != "All Orders") {
+            $query .= " AND orders.status = ?";
+            $values[] = $status;
+        }
+
+        $query .= ";";
+        $orders = $this->db->query($query, $values)->row_array();
+        return $orders["count"];
     }
 
     /**
