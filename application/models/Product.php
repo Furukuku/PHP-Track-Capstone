@@ -50,8 +50,8 @@ class Product extends CI_Model {
      * @param int Catagory id of a product
      * @return array Array of similar products
      */
-    public function getSimilarProducts($id, $category_id) {
-        return $this->db->query("SELECT *, JSON_UNQUOTE(img_links->'$.default') AS display_img FROM products WHERE id != ? AND category_id = ?;", array($id, $category_id))->result_array();
+    public function getSimilarProducts($id, $category_id, $keyword = "") {
+        return $this->db->query("SELECT *, JSON_UNQUOTE(img_links->'$.default') AS display_img FROM products WHERE id != ? AND category_id = ? AND name LIKE ?;", array($id, $category_id, "%{$keyword}%"))->result_array();
     }
 
     /**

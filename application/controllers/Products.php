@@ -84,6 +84,19 @@ class Products extends CI_Controller {
     }
 
     /**
+     * 
+     */
+    public function searchSimilarProducts() {
+        $product = $this->Product->getProductById($this->input->get("id"));
+
+        if ($product) {
+            $this->load->view("partials/customer/similar-products", array(
+                "similar_products" => $this->Product->getSimilarProducts($product["id"], $product["category_id"], $this->input->get("keyword"))
+            ));
+        }
+    }
+
+    /**
      * Renders the list of products for customer
      * @return void
      */

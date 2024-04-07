@@ -78,6 +78,7 @@ $route['orders/paginate/(:any)'] = 'orders/paginationHtml/$1';
 $route['products'] = 'products/index';
 $route['products/filter'] = 'products/filter';
 $route['products/view/(:any)'] = 'products/viewProduct/$1';
+$route['products/similar-search'] = 'products/searchSimilarProducts';
 $route['cart'] = 'carts/index';
 $route['product/categories'] = 'products/customerCategoryListHtml';
 $route['products/customer-search/(:any)/(:any)'] = 'products/customerSearch/$1/$2';

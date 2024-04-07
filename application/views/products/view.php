@@ -59,7 +59,7 @@
         </div>
         <div class="row mb-4 bg-white rounded border shadow-sm px-3 py-5">
             <p class="fs-4">Similar Items</p>
-            <div class="px-2">
+            <div id="similar_products_container" class="px-2">
 <?php
                 foreach ($similar_products as $similar_product) {
 ?>
@@ -90,4 +90,5 @@
     </main>
     <script src="<?= base_url("assets/js/customer/product-images.js"); ?>"></script>
     <script src="<?= base_url("assets/js/customer/add-to-cart.js"); ?>"></script>
+    <script src="<?= base_url("assets/js/customer/search-similar-products.js"); ?>"></script>
     <script src="<?= base_url("assets/js/toast.js"); ?>"></script>
