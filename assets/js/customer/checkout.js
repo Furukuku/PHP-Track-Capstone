@@ -14,6 +14,7 @@ $(document).on("click", "#checkout_btn", function() {
     }
 
     $.post("/cart/checkout", formData, function(res) {
+        console.log(res);
         if (res.status === "success") {
             window.location.href = res.url;
         } else if (res.status === "error") {

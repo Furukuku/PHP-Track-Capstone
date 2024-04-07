@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // Store your stripe api key here
-$config['stripe_api_key'] = '';
+$config['stripe_api_key'] = 'sk_test_51OuTXp00auHCkgqL9LZMPrRoVBofyxDA3Jxg8IO7IgtuN0z7TdHyB57LbUXEM4cJJtDaNyP4azNIGNMitO28B5q6002Hg6RvIF';
 
 /*
 |--------------------------------------------------------------------------

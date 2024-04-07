@@ -146,3 +146,4 @@
     <script src="<?= base_url("assets/js/customer/cart-search.js"); ?>"></script>
     <script src="<?= base_url("assets/js/customer/checkout.js"); ?>"></script>
     <script src="<?= base_url("assets/js/toast.js"); ?>"></script>
+    <?= $toast; ?>

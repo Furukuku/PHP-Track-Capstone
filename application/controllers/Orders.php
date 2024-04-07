@@ -106,10 +106,13 @@ class Orders extends CI_Controller {
      * @return void
      */
     public function successPayment() {
-        // if ($this->Order->createOrder()) {
-        // }
-        $this->Order->createOrder();
-        return redirect("cart"); //CONTINUE HERE
+        if ($this->Order->createOrder()) {
+            $this->session->set_flashdata("payment_success", "Order successfully paid!");
+        } else {
+            $this->session->set_flashdata("payment_error", "Something went wrong, please try again");
+        }
+
+        return redirect("cart");
     }
 
     /**

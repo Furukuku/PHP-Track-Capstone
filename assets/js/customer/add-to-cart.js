@@ -4,6 +4,13 @@ $(document).on("click", "button#increment", function() {
     } else {
         let currValue = parseInt($(this).siblings("input").val());
         currValue++;
+        const stocks = $("input[name='quantity']").attr("max");
+
+        if (currValue > stocks) {
+            $(this).siblings("input").val(currValue);
+            currValue = stocks;
+        }
+
         $(this).siblings("input").val(currValue);
         const price = parseFloat($("#price").text());
         const totalPrice = price * currValue;
@@ -30,6 +37,8 @@ $(document).on("click", "button#decrement", function() {
 });
 
 $(document).on("input", "input[name='quantity']", function() {
+    const stocks = $(this).attr("max");
+
     if ($(this).val() === "") {
         $(this).val(1);
     } else {
@@ -37,9 +46,19 @@ $(document).on("input", "input[name='quantity']", function() {
         if (quantity < 1) {
             $(this).val(1);
         } else {
-            $(this).val(quantity);
+            let finalQuantity = 1;
+
+            if (quantity > stocks) {
+                $(this).val(stocks);
+                finalQuantity = stocks;
+            } else {
+                $(this).val(quantity);
+                finalQuantity = quantity;
+
+            }
+
             const price = parseFloat($("#price").text());
-            const totalPrice = price * quantity;
+            const totalPrice = price * finalQuantity;
             $("#total_amount").text(parseFloat(totalPrice.toFixed(2)));
         }
     }

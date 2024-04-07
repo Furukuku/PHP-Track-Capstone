@@ -8,6 +8,7 @@ class Order extends CI_Model {
         parent::__construct();
         $this->load->model("User");
         $this->load->model("Cart");
+        $this->load->model("Product");
         $this->load->model("Billing");
         $this->load->model("Shipping");
         $this->load->library("form_validation");
@@ -18,28 +19,31 @@ class Order extends CI_Model {
      * @return bool True if successfully added
      */
     public function createOrder() {
-        $orders = $this->Cart->searchItemInCart();
+        $ids = $this->session->userdata("cart_ids");
         $order_info = $this->session->userdata("order_info");
         $billing_id = $this->Billing->createBilling($order_info);
         $shipping_id = $this->Shipping->createShipping($order_info);
+        $this->session->unset_userdata("cart_ids");
+        $this->session->unset_userdata("order_info");
         
         if ($billing_id !== false && $shipping_id !== false) {
             $query = "INSERT INTO orders (user_id, product_id, billing_information_id, shipping_information_id, quantity, amount, created_at, updated_at) VALUES ";
             $values = array();
             
-            foreach ($orders as $key => $order) {
-                $query .= $key == (count($orders) - 1) ? "(?, ?, ?, ?, ?, ?, NOW(), NOW());" : " (?, ?, ?, ?, ?, ?, NOW(), NOW()),";
+            foreach ($ids as $key => $id) {
+                $item = $this->Cart->getItemById($id);
+                $query .= $key == (count($ids) - 1) ? "(?, ?, ?, ?, ?, ?, NOW(), NOW());" : " (?, ?, ?, ?, ?, ?, NOW(), NOW()),";
                 $values[] = $this->session->userdata("user")["id"];
-                $values[] = $order["product_id"];
+                $values[] = $item["product_id"];
                 $values[] = $billing_id;
                 $values[] = $shipping_id;
-                $values[] = $order["quantity"];
-                $values[] = $order["amount"];
+                $values[] = $item["quantity"];
+                $values[] = $item["amount"];
+                $this->Product->updateProductInventory($item["quantity"], $item["product_id"]);
+                $this->Cart->deleteItemInCart($id);
             }
 
             $this->db->query($query, $values);
-
-            $this->Cart->removeItemsInCart();
             return true;
         }
 

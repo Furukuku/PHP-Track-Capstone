@@ -57,7 +57,7 @@ class Product extends CI_Model {
     /**
      * Gets a product based on id
      * @param int Id of the product
-     * @return array Array of the products and it count
+     * @return array Array of the product details
      */
     public function getProductById($id) {
         return $this->db->query("SELECT * FROM products WHERE id = ? LIMIT 1;", array($id))->row_array();
@@ -200,6 +200,18 @@ class Product extends CI_Model {
         }
 
         return $this->db->query("DELETE FROM products WHERE id = ?", array($id));
+    }
+
+    /**
+     * Updates the inventory of a product
+     * @param int Quantity to minus to the current inventory of a product
+     * @param int Id of the product to update
+     * @return bool True if successfully updated
+     */
+    public function updateProductInventory($quantity, $id) {
+        $product = $this->getProductById($id);
+        $current_inventory = $product["inventory"] - $quantity;
+        return $this->db->query("UPDATE products SET inventory = ? WHERE id = ?;", array($current_inventory, $id));
     }
 
     /**

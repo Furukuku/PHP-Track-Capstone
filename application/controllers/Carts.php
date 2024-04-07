@@ -20,7 +20,6 @@ class Carts extends CI_Controller {
      */
     public function index() {
         $user = $this->session->userdata("user");
-        $this->session->unset_userdata("order_info");
         
         if ($user) {
             $csrf = array(
@@ -35,7 +34,8 @@ class Carts extends CI_Controller {
             $this->load->view("carts/index", array(
                 "csrf" => $csrf,
                 "shipping_fee" => $this->shipping_fee,
-                "total_amount" => $this->Cart->countTotalAmountToPay()
+                "total_amount" => $this->Cart->countTotalAmountToPay(),
+                "toast" => $this->toast("payment_success", "payment_error")
             ));
             $this->load->view("partials/customer/footer");
         } else {
@@ -95,10 +95,10 @@ class Carts extends CI_Controller {
         $user = $this->session->userdata("user");
 
         if ($user) {
-            if ($this->Cart->addToCart($this->input->post())) {
+            $product = $this->Cart->validateProductToAdd($this->input->post());
+
+            if ($product && $this->Cart->addToCart($this->input->post())) {
                 $this->session->set_flashdata("cart_add_success", "Item added to cart successfully!");
-            } else {
-                $this->session->set_flashdata("cart_add_error", "Something went wrong, please try again");
             }
         }
 
@@ -185,46 +185,12 @@ class Carts extends CI_Controller {
             );
             echo json_encode($response);
         } else {
-            $orders = $this->Cart->searchItemInCart();
-            $checkouts = array();
+            $url = $this->Cart->validateCheckoutItems($order_info, $this->shipping_fee);
 
-            foreach ($orders as $order) {
-                $checkouts[] = array(
-                    "quantity" => $order["quantity"], 
-                    "price_data" => array(
-                        "currency" => "usd",
-                        "unit_amount" => $order["price"] * 100,
-                        "product_data" => array("name" => $order["name"])
-                    )
-                );
-            }
-
-            if ($checkouts) {
-                $this->session->set_userdata("order_info", $order_info);
-                include_once("./vendor/autoload.php");
-                $stripe = new \Stripe\StripeClient($this->config->item("stripe_api_key")); // configure your api key in config.php file
-                $checkout_session = $stripe->checkout->sessions->create([
-                    'line_items' => $checkouts,
-                    'mode' => 'payment',
-                    'shipping_options' => [
-                        [
-                            'shipping_rate_data' => [
-                                'display_name' => 'Standard Fee',
-                                'type' => 'fixed_amount',
-                                'fixed_amount' => [
-                                    'amount' => $this->shipping_fee * 100,
-                                    'currency' => 'usd'
-                                ]
-                            ]
-                        ]
-                    ],
-                    'success_url' => 'http://capstone.ci/order/success-payment',
-                    'cancel_url' => 'http://capstone.ci/cart'
-                ]);
-
+            if ($url) {
                 $response = array(
                     "status" => "success",
-                    "url" => $checkout_session->url
+                    "url" => $url
                 );
                 echo json_encode($response);
             } else {

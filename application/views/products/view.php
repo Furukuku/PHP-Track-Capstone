@@ -25,6 +25,10 @@
                 </p>
                 <p class="fs-4">&#36; <span id="price"><?= $product["price"]; ?></span></p>
                 <p><?= $product["description"]; ?></p>
+                <p class="mb-1 fst-italic"><?= $product["inventory"]; ?> Stocks</p>
+<?php
+                if ($product["inventory"] > 0) {
+?>
                 <form action="<?= site_url("cart/add"); ?>" method="post" id="add_to_cart" class="row align-items-end">
                     <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
                     <div class="col-md-3">
@@ -32,7 +36,7 @@
                         <label for="quantity" class="form-label">Quantity</label>
                         <div class="input-group">
                             <button class="btn btn-outline-secondary z-1" type="button" id="decrement"><i class="bi bi-dash-lg"></i></button>
-                            <input type="number" name="quantity" min="1" max="50" value="1" class="form-control text-center">
+                            <input type="number" name="quantity" min="1" max="<?= $product["inventory"]; ?>" value="1" class="form-control text-center">
                             <button class="btn btn-outline-secondary z-1" type="button" id="increment"><i class="bi bi-plus-lg"></i></button>
                         </div>
                     </div>
@@ -44,6 +48,13 @@
                         <input type="submit" value="Add to Cart" class="btn btn-bluegreen">
                     </div>
                 </form>
+<?php
+                } else {
+?>
+                <p>Not Available</p>
+<?php
+                }
+?>
             </div>
         </div>
         <div class="row mb-4 bg-white rounded border shadow-sm px-3 py-5">

@@ -13,10 +13,11 @@ foreach ($items as $key => $item) {
         <form action="<?= site_url("cart/update"); ?>" method="post" class="z-0 cart_item_update_form">
             <input type="hidden" name="<?= $csrf['name']; ?>" value="<?= $csrf['hash']; ?>">
             <input type="hidden" name="item_id" value="<?= $item["id"]; ?>">
+            <input type="hidden" name="product_id" value="<?= $item["product_id"]; ?>">
             <label class="form-label">Quantity</label>
             <div class="input-group">
                 <button class="btn btn-outline-secondary decrement" data-key="<?= $key; ?>" type="button"><i class="bi bi-dash-lg"></i></button>
-                <input type="number" name="quantity" readonly min="1" max="50" value="<?= $item["quantity"]; ?>" class="form-control text-center" data-key="<?= $key; ?>">
+                <input type="number" name="quantity" readonly min="1" max="<?= $item["stocks"]; ?>" value="<?= $item["quantity"]; ?>" class="form-control text-center" data-key="<?= $key; ?>">
                 <button class="btn btn-outline-secondary increment" data-key="<?= $key; ?>" type="button"><i class="bi bi-plus-lg"></i></button>
             </div>
         </form>
