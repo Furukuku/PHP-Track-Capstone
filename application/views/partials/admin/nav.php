@@ -1,5 +1,5 @@
     <header class="position-fixed top-0 end-0 p-3 d-flex bg-dark-subtle justify-content-between shadow-sm z-1">
-        <h2 class="text-white">Village88</h2>
+        <h2 class="text-white">KMShop</h2>
         <div class="d-flex align-items-center gap-3">
             <a href="<?= site_url("products"); ?>" class="btn btn-outline-info">Switch to Shop View</a>
             <div class="nav-item dropdown">
@@ -11,7 +11,7 @@
         </div>
     </header>
     <nav class="position-fixed start-0 top-0 bottom-0 px-4 py-2 z-1 bg-dark-subtle sidebar">
-        <a href="<?= site_url("products"); ?>" class="link-underline link-underline-opacity-0"><i class="bi bi-shop-window fs-1 text-white me-3"></i><span class="fs-3 text-light">V88</span></a>
+        <a href="<?= site_url("products"); ?>" class="link-underline link-underline-opacity-0"><i class="bi bi-shop-window fs-1 text-white me-3"></i><span class="fs-3 text-light">KM</span></a>
         <ul class="navbar-nav mt-4">
             <li class="nav-item fs-5">
                 <a href="<?= site_url("my-products"); ?>" class="nav-link"><i class="bi bi-house-door-fill me-2"></i>Products</a>
